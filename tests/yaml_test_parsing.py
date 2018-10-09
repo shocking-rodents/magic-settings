@@ -13,6 +13,7 @@ class TestSettings(BaseSettings):
 
 
 def test_get_config_dict_from_yaml():
+    """Test get_config_dict_from_yaml method creates the dictionary correctly."""
     project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     test_path = os.path.join(project_dir, 'tests', 'files', 'yaml_config_test.yaml')
     config = get_config_dict_from_yaml(test_path)
@@ -21,6 +22,7 @@ def test_get_config_dict_from_yaml():
 
 
 def test_settings_from_yaml():
+    """Test get_config_dict_from_yaml method with update_config method update settings correctly."""
     settings = TestSettings()
     settings.pre_validate()
     settings.update_config(

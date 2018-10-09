@@ -202,19 +202,27 @@ def get_config_dict_from_env(prefix: str = None, environ: Dict = None):
     return result
 
 
-def validate_dict(yaml_dict):
-        if not isinstance(yaml_dict, dict):
+def validate_yaml_dict(yaml_dict):
+    """Validate dict parsed from yaml configuration file
+    :param yaml_dict: dict parsed from yaml configuration file
+    :raises TypeError: if configuration file has several levels of nesting or param is not dict
+    """
+    if not isinstance(yaml_dict, dict):
+        raise TypeError(f'configuration file has several levels of nesting.')
+    for key, value in yaml_dict.items():
+        if not isinstance(key, str) or isinstance(value, dict):
             raise TypeError(f'configuration file has several levels of nesting.')
-        for key, value in yaml_dict.items():
-            if not isinstance(key, str) or isinstance(value, dict):
-                raise TypeError(f'configuration file has several levels of nesting.')
 
 
 def get_config_dict_from_yaml(path: str):
+    """Get and validate dict from yaml file
+    :param path: path to yaml configuration file
+    :return: dict parsed from yaml configuration file or empty dict if exception
+    """
     try:
         with open(path) as file:
             result = yaml.load(file) or {}
-            validate_dict(result)
+            validate_yaml_dict(result)
     except (IOError, TypeError, ValueError) as e:
         logger.error(f'Cannot read YAML config: {e}')
         result = {}
