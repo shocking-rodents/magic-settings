@@ -1,5 +1,6 @@
 import logging
 import os
+import yaml
 from typing import Any, Dict, List, Type, Callable, Union, Tuple
 
 logger = logging.getLogger(__name__)
@@ -199,3 +200,31 @@ def get_config_dict_from_env(prefix: str = None, environ: Dict = None):
     keys = filter(lambda x: x.startswith(prefix), environ.keys()) if prefix else environ.keys()
     result = {k[len(prefix):]: v for k, v in environ.items() if k in keys}
     return result
+
+
+def get_config_dict_from_yaml(path: str):
+
+    def validate_dict(yaml_dict):
+        if not isinstance(yaml_dict, dict):
+            return {}
+        for key, value in yaml_dict.items():
+            if not isinstance(key, str) or isinstance(value, dict):
+                return {}
+        return yaml_dict
+
+    try:
+        with open(path) as file:
+            result = yaml.load(file) or {}
+            result = validate_dict(result)
+            result = {key.upper(): value for key, value in result.items()}
+    except IOError as e:
+        logger.error(f'YAML configuration file not provided on given path: {e}')
+        result = {}
+    return result
+
+
+if __name__ == "__main__":
+    print(get_config_dict_from_yaml(''))
+    print(get_config_dict_from_yaml('/home/nightingale/angrydev/magic-settings/tests/files/yaml_config_test.yaml'))
+    print(get_config_dict_from_yaml('/home/nightingale/angrydev/magic-settings/tests/files/yaml_double_keys.yaml'))
+    print(get_config_dict_from_yaml('/home/nightingale/angrydev/magic-settings/tests/files/yaml_double.yaml'))

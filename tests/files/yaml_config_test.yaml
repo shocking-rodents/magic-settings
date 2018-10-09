@@ -1,0 +1,11 @@
+STR: bar
+INT: 123
+BOOL: true
+LIST:
+- a
+- b
+- c
+NONE: null
+HOST_LIST:
+- localhost:5672
+- localhost:15672

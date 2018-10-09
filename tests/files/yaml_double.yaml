@@ -1,0 +1,4 @@
+- service:
+    name: mysql
+    type: database
+    port: 3306

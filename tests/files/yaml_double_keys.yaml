@@ -1,0 +1,8 @@
+hero:
+  hp: 34
+  sp: 8
+  level: 4
+service:
+  hp: 12
+  sp: 0
+  level: 2
