@@ -206,25 +206,16 @@ def get_config_dict_from_yaml(path: str):
 
     def validate_dict(yaml_dict):
         if not isinstance(yaml_dict, dict):
-            return {}
+            raise TypeError(f'configuration file has several levels of nesting.')
         for key, value in yaml_dict.items():
             if not isinstance(key, str) or isinstance(value, dict):
-                return {}
-        return yaml_dict
+                raise TypeError(f'configuration file has several levels of nesting.')
 
     try:
         with open(path) as file:
             result = yaml.load(file) or {}
-            result = validate_dict(result)
-            result = {key.upper(): value for key, value in result.items()}
-    except IOError as e:
-        logger.error(f'YAML configuration file not provided on given path: {e}')
+            validate_dict(result)
+    except (IOError, TypeError, ValueError) as e:
+        logger.error(f'Cannot read YAML config: {e}')
         result = {}
     return result
-
-
-if __name__ == "__main__":
-    print(get_config_dict_from_yaml(''))
-    print(get_config_dict_from_yaml('/home/nightingale/angrydev/magic-settings/tests/files/yaml_config_test.yaml'))
-    print(get_config_dict_from_yaml('/home/nightingale/angrydev/magic-settings/tests/files/yaml_double_keys.yaml'))
-    print(get_config_dict_from_yaml('/home/nightingale/angrydev/magic-settings/tests/files/yaml_double.yaml'))
