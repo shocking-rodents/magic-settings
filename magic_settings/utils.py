@@ -202,15 +202,15 @@ def get_config_dict_from_env(prefix: str = None, environ: Dict = None):
     return result
 
 
-def get_config_dict_from_yaml(path: str):
-
-    def validate_dict(yaml_dict):
+def validate_dict(yaml_dict):
         if not isinstance(yaml_dict, dict):
             raise TypeError(f'configuration file has several levels of nesting.')
         for key, value in yaml_dict.items():
             if not isinstance(key, str) or isinstance(value, dict):
                 raise TypeError(f'configuration file has several levels of nesting.')
 
+
+def get_config_dict_from_yaml(path: str):
     try:
         with open(path) as file:
             result = yaml.load(file) or {}

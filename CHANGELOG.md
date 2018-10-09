@@ -5,3 +5,8 @@ CHANGELOG
 -----
 
 - Package settings used for VTB
+
+0.2.0
+-----
+
+- YAML configuration file added
