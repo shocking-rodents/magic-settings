@@ -10,3 +10,8 @@ CHANGELOG
 -----
 
 - YAML configuration file added
+
+0.3.0
+-----
+
+- Added dynamic settings
