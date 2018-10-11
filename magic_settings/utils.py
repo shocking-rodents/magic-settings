@@ -195,9 +195,14 @@ def get_config_dict_from_module(module):
 
 
 def get_config_dict_from_env(prefix: str = None, environ: Dict = None):
+    """Creates dictionary using environment variables with prefix
+    :param prefix: prefix variable searching by
+    :param environ: dictionary, by default os.environ
+    :return: dictionary with environment variable without prefix
+    """
     prefix = f'{prefix}_' if (prefix is not None) and not prefix.endswith('_') else prefix
     environ = os.environ if environ is None else environ
-    keys = filter(lambda x: x.startswith(prefix), environ.keys()) if prefix else environ.keys()
+    keys = list(filter(lambda x: x.startswith(prefix), environ.keys()) if prefix else environ.keys())
     result = {k[len(prefix):]: v for k, v in environ.items() if k in keys}
     return result
 
