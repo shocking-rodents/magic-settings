@@ -1,17 +1,18 @@
 CHANGELOG
 =========
 
-0.1.0 (2018-10-03)
+0.3.0
 -----
 
-- Package settings used for VTB
+- Added dynamic settings
+- Bug fix return generator instead of list in get_config_dict_from_env
 
 0.2.0
 -----
 
 - YAML configuration file added
 
-0.3.0
+0.1.0 (2018-10-03)
 -----
 
-- Added dynamic settings
+- Package settings used for VTB
