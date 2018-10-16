@@ -14,6 +14,12 @@ def get_version():
             return eval(line.split('=')[1])
 
 
+def parse_requirements():
+    """Parse requirements.txt for install_requires"""
+    requirements = read('requirements.txt')
+    return tuple(requirements.split('\n'))
+
+
 setup(name='magic-settings',
       version=get_version(),
       description='magic parser is a library for parsing configs',
@@ -24,4 +30,6 @@ setup(name='magic-settings',
       license='Apache 2.0',
       packages=['magic_settings'],
       include_package_data=True,
-      zip_safe=False)
+      zip_safe=False,
+      install_requires=parse_requirements(),
+      )

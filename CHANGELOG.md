@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.3.1
+-----
+
+- Added requirements.txt
+
 0.3.0
 -----
 
