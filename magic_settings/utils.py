@@ -2,6 +2,7 @@ import logging
 import os
 import yaml
 from typing import Any, Dict, List, Type, Callable, Union, Tuple
+from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
@@ -86,6 +87,36 @@ class BaseSettings:
             if not validator(_property.default):
                 raise ValueError(f'Default value of {_property.name} property '
                                  f'fall validation on {validator.__name__}')
+
+    def get_settings(
+            self,
+            prefix: str = "",
+            dotenv_path: str=".env",
+            override_env: bool = False,
+            yaml_settings_path: str = "settings.yaml",
+            use_yaml_settings: bool = False,
+            base=None,
+            local=None,
+    ):
+        """
+        Get settings from environment
+        :param prefix: prefix for environment variables
+        :param dotenv_path: path to environment file
+        :param override_env: True is allowed to override environment variables
+        :param yaml_settings_path: path to yaml_settings file
+        :param use_yaml_settings: True is configs are in yaml file
+        :param base: python module with settings
+        :param local: python module with settings
+        :return: configured settings
+        """
+        self.pre_validate()
+        self.update_config(**get_config_dict_from_module(base)).update_config(**get_config_dict_from_module(local))
+        load_dotenv(dotenv_path=dotenv_path, override=override_env)
+        self.update_config(**get_config_dict_from_env(prefix=prefix))
+        if use_yaml_settings:
+            self.update_config(**get_config_dict_from_yaml(yaml_settings_path))
+        self.post_validate()
+        return self
 
 
 class BaseProperty:

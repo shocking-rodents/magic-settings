@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.4.0
+-----
+
+- Added get_settings in BaseSettings
+
 0.3.1
 -----
 
