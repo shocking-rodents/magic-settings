@@ -110,7 +110,9 @@ class BaseSettings:
         :return: configured settings
         """
         self.pre_validate()
-        self.update_config(**get_config_dict_from_module(base)).update_config(**get_config_dict_from_module(local))
+        self.update_config(**get_config_dict_from_module(base))
+        if local:
+            self.update_config(**get_config_dict_from_module(local))
         load_dotenv(dotenv_path=dotenv_path, override=override_env)
         self.update_config(**get_config_dict_from_env(prefix=prefix))
         if use_yaml_settings:

@@ -6,6 +6,7 @@ CHANGELOG
 
 - Added get_settings in BaseSettings
 - Dynamic settings for database removed
+- Local settings is optional
 
 0.3.1
 -----
