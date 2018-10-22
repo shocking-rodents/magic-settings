@@ -1,0 +1,16 @@
+variables:
+  REGISTRY_URL: $CI_REGISTRY/public_repos/images/
+
+stages:
+- test
+
+all_branch_test:
+  stage: test
+  tags:
+  - build-docker
+  image: ${REGISTRY_URL}python:3.7-alpine
+  script:
+  - apk add --no-cache gcc make
+  - make test
+
+
