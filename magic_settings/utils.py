@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import os
 import yaml
@@ -90,10 +91,10 @@ class BaseSettings:
 
     def get_settings(
             self,
-            prefix: str = "",
-            dotenv_path: str=".env",
+            prefix: str = '',
+            dotenv_path: str = '.env',
             override_env: bool = False,
-            yaml_settings_path: str = "settings.yaml",
+            yaml_settings_path: str = 'settings.yaml',
             use_yaml_settings: bool = False,
             base=None,
             local=None,

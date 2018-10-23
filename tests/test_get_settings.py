@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 import pytest
@@ -9,7 +10,7 @@ from tests.files import base, local
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def settings():
     """Fixture settings"""
     class TestSettings(BaseSettings):
@@ -26,7 +27,7 @@ def test_get_settings_with_params(settings):
     dotenv_path = os.path.join(TEST_DIR, 'files', '.env')
     yaml_settings_path = os.path.join(TEST_DIR, 'files', 'settings.yaml')
     settings.get_settings(
-        prefix="ENV",
+        prefix='ENV',
         dotenv_path=dotenv_path,
         override_env=True,
         yaml_settings_path=yaml_settings_path,
@@ -35,13 +36,13 @@ def test_get_settings_with_params(settings):
         local=local,
     )
     assert settings.USE_YAML is True
-    assert settings.PREFIX == "YAML_ENV"
-    assert settings.TEST_PROP == "YAML_PROPERTY"
+    assert settings.PREFIX == 'YAML_ENV'
+    assert settings.TEST_PROP == 'YAML_PROPERTY'
 
 
 def test_get_settings_without_params(settings):
     """Test get_settings without parameters"""
     settings.get_settings(base=base, local=local)
     assert settings.USE_YAML is True
-    assert settings.PREFIX == "BASE_ENV"
-    assert settings.TEST_PROP == "BASE_PROPERTY"
+    assert settings.PREFIX == 'BASE_ENV'
+    assert settings.TEST_PROP == 'BASE_PROPERTY'

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from magic_settings import BaseSettings, Property, NoneType, get_config_dict_from_yaml
 
@@ -31,8 +32,7 @@ def test_settings_from_yaml():
     settings.post_validate()
     assert settings.STR == 'bar'
     assert settings.INT == 123
-    assert settings.BOOL == True
+    assert settings.BOOL is True
     assert settings.LIST == ['a', 'b', 'c']
-    assert settings.NONE == None
+    assert settings.NONE is None
     assert settings.HOST_LIST == ['localhost:5672', 'localhost:15672']
-
