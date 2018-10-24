@@ -6,6 +6,7 @@ CHANGELOG
 
 - Added gitlab-ci configuration
 - Added makefile for tests running
+- Added \_\_init\_\_ to BaseSettings
 
 
 0.4.0

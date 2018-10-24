@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
-import yaml
+import types
 from typing import Any, Dict, List, Type, Callable, Union, Tuple
+
+import yaml
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
@@ -28,6 +30,36 @@ class BaseSettings:
     settings.update_config(FOO='bar')
     settings.post_validate()
     """
+
+    def __init__(self, modules=None, prefix=None, dotenv_path=None, override_env=False, yaml_settings_path=None):
+        """
+        :param modules: list of modules with settings or None
+        :param prefix: prefix for env variables
+        :param dotenv_path: path to .env file
+        :param override_env: override environment variables if True
+        :param yaml_settings_path: path to yaml settings
+        :raises ValueError: if modules type is not list or NoneType
+                or if item in modules type is not ModuleType
+        """
+        if not isinstance(modules, (list, NoneType)):
+            raise ValueError('modules type is not list or NoneType')
+
+        self.modules = modules or list()
+
+        for module in self.modules:
+            if not isinstance(module, types.ModuleType):
+                raise ValueError(f'{module} type is not ModuleType')
+
+        self.use_yaml_settings = isinstance(yaml_settings_path, str)
+
+        if self.use_yaml_settings:
+            self.yaml_settings_path = yaml_settings_path
+
+        self.dotenv_path = dotenv_path
+        self.override_env = override_env
+        self.prefix = prefix if isinstance(prefix, str) else ''
+
+        load_dotenv(dotenv_path=self.dotenv_path, override=self.override_env)
 
     def update_config(self, **kwargs):
         for k, v in kwargs.items():
@@ -89,35 +121,17 @@ class BaseSettings:
                 raise ValueError(f'Default value of {_property.name} property '
                                  f'fall validation on {validator.__name__}')
 
-    def get_settings(
-            self,
-            prefix: str = '',
-            dotenv_path: str = '.env',
-            override_env: bool = False,
-            yaml_settings_path: str = 'settings.yaml',
-            use_yaml_settings: bool = False,
-            base=None,
-            local=None,
-    ):
+    def get_settings(self):
         """
-        Get settings from environment
-        :param prefix: prefix for environment variables
-        :param dotenv_path: path to environment file
-        :param override_env: True is allowed to override environment variables
-        :param yaml_settings_path: path to yaml_settings file
-        :param use_yaml_settings: True is configs are in yaml file
-        :param base: python module with settings
-        :param local: python module with settings
+        Get settings from environments
         :return: configured settings
         """
         self.pre_validate()
-        self.update_config(**get_config_dict_from_module(base))
-        if local:
-            self.update_config(**get_config_dict_from_module(local))
-        load_dotenv(dotenv_path=dotenv_path, override=override_env)
-        self.update_config(**get_config_dict_from_env(prefix=prefix))
-        if use_yaml_settings:
-            self.update_config(**get_config_dict_from_yaml(yaml_settings_path))
+        for module in self.modules:
+            self.update_config(**get_config_dict_from_module(module))
+        self.update_config(**get_config_dict_from_env(prefix=self.prefix))
+        if self.use_yaml_settings:
+            self.update_config(**get_config_dict_from_yaml(self.yaml_settings_path))
         self.post_validate()
         return self
 
