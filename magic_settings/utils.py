@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import contextlib
 import logging
 import os
 import types
@@ -135,6 +136,25 @@ class BaseSettings:
         self.post_validate()
         return self
 
+    @contextlib.contextmanager
+    def temp_set_attributes(self, **kwargs):
+        """
+        Temporarily set an attributes on settings for the duration of the context manager.
+        Not Thread-safe
+        :param kwargs: dict: key - attribute name, value - temporary value
+        :raises AttributeError: if any key in kwargs doesn't fit to any attribute name in class
+        """
+        old_values = {}
+        for attr, new_value in kwargs.items():
+            if hasattr(self, attr):
+                old_values[attr] = getattr(self, attr)
+                setattr(self, attr, new_value)
+            else:
+                raise AttributeError(f'{self.__class__} does`t have such attribute')
+        yield
+        for attr, old_value in old_values.items():
+            setattr(self, attr, old_value)
+
 
 class BaseProperty:
     def __init__(self, types: Union[Tuple[Type, ...], Type] = None, validators: List[Callable] = None,
@@ -152,8 +172,7 @@ class BaseProperty:
         if instance is None:
             return self
 
-        instance.__dict__.setdefault(self.name, self.default)
-        value = instance.__dict__[self.name]
+        value = instance.__dict__.setdefault(self.name, self.default)
 
         return value
 

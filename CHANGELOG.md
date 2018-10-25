@@ -7,7 +7,7 @@ CHANGELOG
 - Added gitlab-ci configuration
 - Added makefile for tests running
 - Added \_\_init\_\_ to BaseSettings
-
+- Added temp_set_attributes in BaseSettings
 
 0.4.0
 -----
