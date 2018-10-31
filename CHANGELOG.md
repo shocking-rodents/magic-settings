@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-0.5.0-rc
---------
+0.5.0
+-----
 
 - Added gitlab-ci configuration
 - Added makefile for tests running

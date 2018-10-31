@@ -16,7 +16,7 @@ from .utils import (
 
 from .dynamic_settings_base import BaseDynamicSettings
 
-__version__ = '0.5.0-rc'
+__version__ = '0.5.0'
 
 __all__ = [
     'NoneType', 'Undefined', 'BaseSettings', 'BaseProperty',
