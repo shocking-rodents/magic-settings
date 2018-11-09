@@ -118,10 +118,14 @@ async def test_loop_exception(dyn_settings):
 async def test_loop_exception_fail(dyn_settings):
     source_backup = dict(source)
     source['PARAM_LIST'] = 42
-    dyn_settings.task_retries_number = 2
-    dyn_settings.task_retry_delay = 0.2
+    dyn_settings.task_retries_number = 1
+    dyn_settings.update_period = 0.2
     await dyn_settings.start_update()
-    await asyncio.sleep(1)
+    await asyncio.sleep(0.3)
+
+    assert not dyn_settings.task.done()
+
+    await asyncio.sleep(0.3)
 
     assert dyn_settings.task.done()
     source.update(source_backup)

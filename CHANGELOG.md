@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.6.0
+-----
+
+- Added exception DynamicSettingsSourceError
+
 0.5.0
 -----
 
