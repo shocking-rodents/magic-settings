@@ -57,39 +57,39 @@ def settings_with_modules():
     return settings
 
 
-def test_get_settings(settings_with_yaml):
-    """Test get_settings with yaml"""
-    settings_with_yaml.get_settings()
+def test_init(settings_with_yaml):
+    """Test init with yaml"""
+    settings_with_yaml.init()
     assert settings_with_yaml.USE_YAML
     assert settings_with_yaml.PREFIX == 'YAML_ENV'
     assert settings_with_yaml.TEST_PROP == 'YAML_PROPERTY'
 
 
-def test_get_settings_with_env(settings_with_env):
-    """Test get_settings with env"""
-    settings_with_env.get_settings()
+def test_init_with_env(settings_with_env):
+    """Test init with env"""
+    settings_with_env.init()
     assert settings_with_env.USE_YAML
     assert settings_with_env.PREFIX == 'ENV_ENV'
     assert settings_with_env.TEST_PROP == 'ENV_PROPERTY'
 
 
-def test_get_settings_with_prefix(settings_with_prefix):
-    """Test get_settings with prefix"""
-    settings_with_prefix.get_settings()
+def test_init_with_prefix(settings_with_prefix):
+    """Test init with prefix"""
+    settings_with_prefix.init()
     assert settings_with_prefix.USE_YAML
     assert settings_with_prefix.PREFIX == 'ENV_ENV'
     assert settings_with_prefix.TEST_PROP == 'ENV_PROPERTY'
 
 
-def test_get_settings_with_modules(settings_with_modules):
-    """Test get_settings with modules"""
-    settings_with_modules.get_settings()
+def test_init_with_modules(settings_with_modules):
+    """Test init with modules"""
+    settings_with_modules.init()
     assert not settings_with_modules.USE_YAML
     assert settings_with_modules.PREFIX == 'BASE_ENV'
     assert settings_with_modules.TEST_PROP == 'BASE_PROPERTY'
 
 
-def test_get_settings_with_bad_module():
-    """Test get_settings with bad parameters"""
+def test_init_with_bad_module():
+    """Test init with bad parameters"""
     with pytest.raises(ValueError, message='Expecting ValueError'):
         TestSettings(modules=[base, local, 'not_module'])

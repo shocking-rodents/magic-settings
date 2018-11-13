@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+0.7.0
+-----
+
+- Added init function in BaseSettings
+- Marked get_settings as deprecated 
+
 0.6.0
 -----
 

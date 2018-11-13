@@ -3,6 +3,7 @@ import contextlib
 import logging
 import os
 import types
+import warnings
 from typing import Any, Dict, List, Type, Callable, Union, Tuple
 
 import yaml
@@ -122,11 +123,8 @@ class BaseSettings:
                 raise ValueError(f'Default value of {_property.name} property '
                                  f'fall validation on {validator.__name__}')
 
-    def get_settings(self):
-        """
-        Get settings from environments
-        :return: configured settings
-        """
+    def init(self):
+        """Initialize settings"""
         self.pre_validate()
         for module in self.modules:
             self.update_config(**get_config_dict_from_module(module))
@@ -134,6 +132,14 @@ class BaseSettings:
         if self.use_yaml_settings:
             self.update_config(**get_config_dict_from_yaml(self.yaml_settings_path))
         self.post_validate()
+
+    def get_settings(self):
+        """
+        Get settings from environments
+        :return: configured settings
+        """
+        warnings.warn('Using get_settings will be removed in 1.0.0 version. Use init instead.', DeprecationWarning)
+        self.init()
         return self
 
     @contextlib.contextmanager
