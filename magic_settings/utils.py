@@ -33,7 +33,8 @@ class BaseSettings:
     settings.post_validate()
     """
 
-    def __init__(self, modules=None, prefix=None, dotenv_path=None, override_env=False, yaml_settings_path=None):
+    def __init__(self, modules=None, prefix=None, dotenv_path=None,
+                 override_env=False, yaml_settings_path=None, use_env=True):
         """
         :param modules: list of modules with settings or None
         :param prefix: prefix for env variables
@@ -61,7 +62,7 @@ class BaseSettings:
         self.override_env = override_env
         self.prefix = prefix if isinstance(prefix, str) else ''
 
-        load_dotenv(dotenv_path=self.dotenv_path, override=self.override_env)
+        self.use_env = use_env
 
     def update_config(self, **kwargs):
         for k, v in kwargs.items():
@@ -126,11 +127,18 @@ class BaseSettings:
     def init(self):
         """Initialize settings"""
         self.pre_validate()
+
         for module in self.modules:
             self.update_config(**get_config_dict_from_module(module))
-        self.update_config(**get_config_dict_from_env(prefix=self.prefix))
+
+        if self.use_env:
+            if self.dotenv_path:
+                load_dotenv(dotenv_path=self.dotenv_path, override=self.override_env)
+            self.update_config(**get_config_dict_from_env(prefix=self.prefix))
+
         if self.use_yaml_settings:
             self.update_config(**get_config_dict_from_yaml(self.yaml_settings_path))
+
         self.post_validate()
 
     def get_settings(self):
