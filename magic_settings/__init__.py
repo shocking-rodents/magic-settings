@@ -16,7 +16,7 @@ from .utils import (
 
 from .dynamic_settings_base import BaseDynamicSettings, DynamicSettingsSourceError
 
-__version__ = '0.8.0-rc'
+__version__ = '0.8.0'
 
 __all__ = [
     'NoneType', 'Undefined', 'BaseSettings', 'BaseProperty',

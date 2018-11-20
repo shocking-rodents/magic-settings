@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-0.8.0-rc
+0.8.0
 -----
 
 - Added using env optional
