@@ -5,6 +5,7 @@ CHANGELOG
 -----
 
 - Added using env optional
+- Added README
 
 0.7.0
 -----

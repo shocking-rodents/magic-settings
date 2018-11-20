@@ -41,6 +41,7 @@ class BaseSettings:
         :param dotenv_path: path to .env file
         :param override_env: override environment variables if True
         :param yaml_settings_path: path to yaml settings
+        :param use_env: True if use environment variables else False
         :raises ValueError: if modules type is not list or NoneType
                 or if item in modules type is not ModuleType
         """
