@@ -51,8 +51,8 @@ class BaseSettings:
         self.modules = modules or list()
 
         for module in self.modules:
-            if not isinstance(module, types.ModuleType):
-                raise ValueError(f'{module} type is not ModuleType')
+            if not isinstance(module, (types.ModuleType, NoneType)):
+                raise ValueError(f'{module} type is not ModuleType or NoneType')
 
         self.use_yaml_settings = isinstance(yaml_settings_path, str)
 

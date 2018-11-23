@@ -22,6 +22,7 @@ class TestSettings(BaseSettings):
     ([base, local], 'ENV', DOTENV_PATH, True, None, True, [True, 'ENV_ENV', 'ENV_PROPERTY']),
     (None, 'ENV', DOTENV_PATH, True, None, True, [True, 'ENV_ENV', 'ENV_PROPERTY']),
     ([base, local], None, None, False, None, True, [False, 'BASE_ENV', 'BASE_PROPERTY']),
+    ([base, None], None, None, False, None, True, [False, 'BASE_ENV', 'BASE_PROPERTY']),
     ([base, local], 'ENV', DOTENV_PATH, True, None, False, [False, 'BASE_ENV', 'BASE_PROPERTY']),
 ])
 def test_init_settings(modules, prefix, dotenv_path, override_env, yaml_settings_path, use_env, expected):

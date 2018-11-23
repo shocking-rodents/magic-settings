@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+0.8.1
+---
+
+- Fix bug ValueError on NoneType in modules
+
+
 0.8.0
 -----
 
