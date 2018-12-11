@@ -87,8 +87,8 @@ class BaseSettings:
         for _property in self.properties:
             value = getattr(self, _property.name)
             if isinstance(value, Undefined):
-                raise ValueError(f'Undefined value of {_property.name} property, '
-                                 f'you must specify it in settings/local.py')
+                raise ValueError(f'Undefined value of required {_property.name} property, '
+                                 f'you must specify it in your config source.')
 
     @staticmethod
     def validate_types(_property):

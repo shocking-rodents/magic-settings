@@ -40,3 +40,12 @@ def test_init_with_bad_module():
     """Test init with bad parameters"""
     with pytest.raises(ValueError, message='Expecting ValueError'):
         TestSettings(modules=[base, local, 'not_module'])
+
+
+def test_undefined_property():
+    settings_path = os.path.join(TEST_DIR, 'files', 'incomplete_settings.yaml')
+    settings = TestSettings(yaml_settings_path=settings_path)
+    with pytest.raises(ValueError) as error:
+        settings.post_validate()
+    expected = 'Undefined value of required PREFIX property, you must specify it in your config source.'
+    assert str(error.value) == expected
