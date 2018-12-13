@@ -4,6 +4,7 @@ import logging
 import os
 import types
 import warnings
+from json import dumps
 from typing import Any, Dict, List, Type, Callable, Union, Tuple
 
 import yaml
@@ -141,6 +142,46 @@ class BaseSettings:
             self.update_config(**get_config_dict_from_yaml(self.yaml_settings_path))
 
         self.post_validate()
+
+    def to_dict(self):
+        """ Dict representation """
+        sources = []
+
+        for module in self.modules:
+            if module is not None:
+                sources.append({
+                    'source_type': 'module',
+                    'address': {
+                        'name': module.__name__,
+                    },
+                })
+
+        if self.use_env:
+            sources.append({
+                'source_type': 'dotenv',
+                'address': {
+                    'dotenv_path': self.dotenv_path,
+                    'override': self.override_env,
+                },
+            })
+
+        if self.use_yaml_settings:
+            sources.append({
+                'source_type': 'yaml',
+                'address': {
+                    'yaml_settings_path': self.yaml_settings_path,
+                }
+            })
+
+        result_dict = {
+            'properties': {prop.name: getattr(self, prop.name) for prop in self.properties},
+            'sources': sources,
+        }
+        return result_dict
+
+    def to_json(self):
+        """ Json representation """
+        return dumps(self.to_dict(), ensure_ascii=False)
 
     def get_settings(self):
         """
