@@ -55,16 +55,17 @@ class BaseSettings:
             if not isinstance(module, (types.ModuleType, NoneType)):
                 raise ValueError(f'{module} type is not ModuleType or NoneType')
 
-        self.use_yaml_settings = isinstance(yaml_settings_path, str)
-
-        if self.use_yaml_settings:
-            self.yaml_settings_path = yaml_settings_path
+        self.yaml_settings_path = yaml_settings_path
 
         self.dotenv_path = dotenv_path
         self.override_env = override_env
         self.prefix = prefix if isinstance(prefix, str) else ''
 
         self.use_env = use_env
+
+    @property
+    def use_yaml_settings(self):
+        return isinstance(self.yaml_settings_path, str)
 
     def update_config(self, **kwargs):
         for k, v in kwargs.items():
