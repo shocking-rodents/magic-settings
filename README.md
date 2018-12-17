@@ -160,6 +160,41 @@ print(settings.PIKACHU)
 
 Метод ```temp_set_attributes``` не является потокобезопасным.
 
+## Список настроек
+Для получения списка настроек можно использовать методы `to_dict()`, `to_json`:
+```python
+from magic_settings import BaseSettings, Property
+class MySettings(BaseSettings):
+    PSYDUCK = Property(types=str)
+    PIKACHU = Property(types=str)
+    
+settings = MySettings(dotenv_path='12345.env')
+settings.PIKACHU = '3'
+settings.PSYDUCK = '12345'
+settings.to_dict()
+# {
+#     'properties': {
+#         'PIKACHU': '3',
+#         'PSYDUCK': '12345'
+#     },
+#     'sources': [{
+#         'source_type': 'dotenv',
+#         'address': {
+#             'dotenv_path': '12345.env',
+#             'override': False
+#         }
+#     }]
+# }
+```
+
+## Валидация
+При переопределении метода `update_settings_from_source` рекомендуется использовать следующие методы класса `BaseSettings`:
+
+1. `pre_validate` — проверка наличия типов в `Property`, проверка соответствия типу `Property` в возможных значениях `Property.choices`, проверка значения по умолчанию на соответствии типу.
+
+2. `post_validate` — проверка на то, что каждому `Property` присвоено какое-либо значение
+  
+
 Динамические настройки
 ---
 

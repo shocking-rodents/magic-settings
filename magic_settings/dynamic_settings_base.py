@@ -26,7 +26,7 @@ class BaseDynamicSettings(BaseSettings, ABC):
         """Updating active settings from source"""
         pass
 
-    async def periodic(self):
+    async def _periodic(self):
         """Updating settings task"""
         retries_left = self.task_retries_number
         while retries_left >= 0:
@@ -44,7 +44,7 @@ class BaseDynamicSettings(BaseSettings, ABC):
 
     async def start_update(self):
         """Start updating task"""
-        self.task = self.loop.create_task(self.periodic())
+        self.task = self.loop.create_task(self._periodic())
 
     async def stop_update(self):
         """Stop updating task"""

@@ -64,7 +64,7 @@ class BaseSettings:
         self.use_env = use_env
 
     @property
-    def use_yaml_settings(self):
+    def _use_yaml_settings(self):
         return isinstance(self.yaml_settings_path, str)
 
     def update_config(self, **kwargs):
@@ -81,9 +81,9 @@ class BaseSettings:
 
     def pre_validate(self):
         for _property in self.properties:
-            self.validate_types(_property)
-            self.validate_choices(_property)
-            self.validate_default(_property)
+            self._validate_types(_property)
+            self._validate_choices(_property)
+            self._validate_default(_property)
 
     def post_validate(self):
         for _property in self.properties:
@@ -93,12 +93,12 @@ class BaseSettings:
                                  f'you must specify it in your config source.')
 
     @staticmethod
-    def validate_types(_property):
+    def _validate_types(_property):
         if _property.types is None:
             raise ValueError(f'Types should be specified on {_property.name} property')
 
     @staticmethod
-    def validate_choices(_property):
+    def _validate_choices(_property):
         for choice in _property.choices:
             if _property.types and not isinstance(choice, _property.types):
                 raise ValueError(f'Choices values of {_property.name} property '
@@ -108,7 +108,7 @@ class BaseSettings:
                 raise ValueError(f'Choices values of {_property.name} property falls validation')
 
     @staticmethod
-    def validate_default(_property):
+    def _validate_default(_property):
         if isinstance(_property.default, Undefined):
             return None
 
@@ -132,15 +132,15 @@ class BaseSettings:
         self.pre_validate()
 
         for module in self.modules:
-            self.update_config(**get_config_dict_from_module(module))
+            self.update_config(**_get_config_dict_from_module(module))
 
         if self.use_env:
             if self.dotenv_path:
                 load_dotenv(dotenv_path=self.dotenv_path, override=self.override_env)
-            self.update_config(**get_config_dict_from_env(prefix=self.prefix))
+            self.update_config(**_get_config_dict_from_env(prefix=self.prefix))
 
-        if self.use_yaml_settings:
-            self.update_config(**get_config_dict_from_yaml(self.yaml_settings_path))
+        if self._use_yaml_settings:
+            self.update_config(**_get_config_dict_from_yaml(self.yaml_settings_path))
 
         self.post_validate()
 
@@ -166,7 +166,7 @@ class BaseSettings:
                 },
             })
 
-        if self.use_yaml_settings:
+        if self._use_yaml_settings:
             sources.append({
                 'source_type': 'yaml',
                 'address': {
@@ -314,11 +314,11 @@ class TransformsComplexProperty(TransformsMixin, ComplexProperty):
     pass
 
 
-def get_config_dict_from_module(module):
+def _get_config_dict_from_module(module):
     return {var: getattr(module, var) for var in filter(str.isupper, dir(module))}
 
 
-def get_config_dict_from_env(prefix: str = None, environ: Dict = None):
+def _get_config_dict_from_env(prefix: str = None, environ: Dict = None):
     """Creates dictionary using environment variables with prefix
     :param prefix: prefix variable searching by
     :param environ: dictionary, by default os.environ
@@ -331,7 +331,7 @@ def get_config_dict_from_env(prefix: str = None, environ: Dict = None):
     return result
 
 
-def validate_yaml_dict(yaml_dict):
+def _validate_yaml_dict(yaml_dict):
     """Validate dict parsed from yaml configuration file
     :param yaml_dict: dict parsed from yaml configuration file
     :raises TypeError: if configuration file has several levels of nesting or param is not dict
@@ -343,7 +343,7 @@ def validate_yaml_dict(yaml_dict):
             raise TypeError(f'configuration file has several levels of nesting.')
 
 
-def get_config_dict_from_yaml(path: str):
+def _get_config_dict_from_yaml(path: str):
     """Get and validate dict from yaml file
     :param path: path to yaml configuration file
     :return: dict parsed from yaml configuration file or empty dict if exception
@@ -351,7 +351,7 @@ def get_config_dict_from_yaml(path: str):
     try:
         with open(path) as file:
             result = yaml.load(file) or {}
-            validate_yaml_dict(result)
+            _validate_yaml_dict(result)
     except (IOError, TypeError, ValueError) as e:
         logger.error(f'Cannot read YAML config: {e}')
         result = {}
