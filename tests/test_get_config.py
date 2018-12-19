@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 
+import pytest
+
 from magic_settings import BaseSettings, Property, NoneType
-from magic_settings.utils import _get_config_dict_from_yaml
+from magic_settings.utils import _get_config_dict_from_yaml, _get_config_dict_from_module
+from tests.files import base, local, test_module
 
 
 class TestSettings(BaseSettings):
@@ -38,3 +41,13 @@ def test_settings_from_yaml():
     assert settings.LIST == ['a', 'b', 'c']
     assert settings.NONE is None
     assert settings.HOST_LIST == ['localhost:5672', 'localhost:15672']
+
+
+@pytest.mark.parametrize('module, expected', (
+    (base, {'USE_YAML': False, 'TEST_PROP': 'BASE_PROPERTY', 'PREFIX': 'BASE_ENV'}),
+    (local, {}),
+    (test_module, {'USE_YAML': False, 'TEST_PROP': 'BASE_PROPERTY', 'PREFIX': 'BASE_ENV', 'PROPERTY': 'property'})
+))
+def test_get_config_dict_from_module(module, expected):
+    """Test _get_config_dict_from_module method creates the dictionary correctly."""
+    assert _get_config_dict_from_module(module) == expected
