@@ -4,7 +4,7 @@ import os
 import pytest
 
 from magic_settings import BaseSettings, Property, NoneType
-from magic_settings.utils import _get_config_dict_from_yaml, _get_config_dict_from_module
+from magic_settings.utils import _get_config_dict_from_yaml, _get_config_dict_from_module, _get_config_dict_from_env
 from tests.files import base, local, test_module
 
 
@@ -51,3 +51,67 @@ def test_settings_from_yaml():
 def test_get_config_dict_from_module(module, expected):
     """Test _get_config_dict_from_module method creates the dictionary correctly."""
     assert _get_config_dict_from_module(module) == expected
+
+
+@pytest.mark.parametrize('params, expected', (
+    ({
+        'prefix': 'DUCK',
+        'environ': {
+            'DUCK_INT': '3',
+            'DUCKDUCKGO': 'duckduckgo.com',
+            '_+-%': 'What???',
+            'DUCK__INT': '5',
+        }
+    }, {
+        'INT': '3',
+        '_INT': '5',
+    }),
+
+    ({
+        'prefix': 'Psy',
+        'environ': {
+            'PsyDuck': 'True',
+            'Psy_Duck': 'False',
+            'PSYDUCK': 'PSYDUCK',
+            'PSY_DUCK': 'DUCK',
+        }
+    }, {
+        'Duck': 'False',
+    }),
+
+    ({
+        'prefix': '',
+        'environ': {
+            'DUCK_INT': '3',
+            'DUCKDUCKGO': 'duckduckgo.com',
+            '_+-%': 'What???',
+            'DUCK__INT': '5',
+            'PSY_DUCK': 'ABC',
+        }
+    }, {
+        'DUCK_INT': '3',
+        'DUCKDUCKGO': 'duckduckgo.com',
+        '_+-%': 'What???',
+        'DUCK__INT': '5',
+        'PSY_DUCK': 'ABC',
+    }),
+
+    ({
+        'prefix': '_',
+        'environ': {
+            'DUCK_INT': '3',
+            'DUCKDUCKGO': 'duckduckgo.com',
+            '_+-%': 'What???',
+            'DUCK__INT': '5',
+            'PSY_DUCK': 'ABC',
+            '_': '21354',
+        }
+    }, {
+        '+-%': 'What???',
+    }),
+
+))
+def test_get_config_dict_from_env(params, expected):
+    """Test _get_config_dict_from_env method creates the dictionary correctly."""
+    actual = _get_config_dict_from_env(**params)
+    assert actual == expected
