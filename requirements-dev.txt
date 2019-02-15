@@ -1,5 +1,6 @@
 -r requirements.txt
 pytest-asyncio==0.9.0
 pytest==3.9.1
-pre-commit==1.11.2
+pre-commit==1.14.3
 pytest-cov==2.6.0
+wheel==0.33.0

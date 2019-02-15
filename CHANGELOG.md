@@ -1,11 +1,17 @@
 CHANGELOG
 =========
 
+0.9.0
+-----
+
+- Public release
+- Added documentation
+- Added `to_json` method
+
 0.8.1
----
+-----
 
 - Fix bug ValueError on NoneType in modules
-
 
 0.8.0
 -----
