@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.0.0
+-----
+
+- Fix README for PyPi
+- Updated PyYaml and dotenv requirements
+- PyYaml requirement moved to extras
+
 0.9.0
 -----
 
