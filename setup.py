@@ -17,22 +17,17 @@ def get_version() -> str:
             return eval(line.split('=')[1])
 
 
-def parse_requirements() -> tuple:
-    """Parse requirements.txt for install_requires"""
-    requirements = read('requirements.txt')
-    return tuple(requirements.split('\n'))
-
-
 setup(
     name='magic-settings',
     version=get_version(),
     description='Configuration manager for Python applications.',
     packages=find_packages(exclude=['tests', ]),
     keywords='parser config environment settings configuration',
-    url='https://git.angrydev.ru/public_repos/magic-settings/',
-    download_url='https://git.angrydev.ru/public_repos/magic-settings/tree/master',
+    url='https://github.com/shocking-rodents/magic-settings/',
+    download_url='https://pypi.org/project/magic-settings/',
     author='Angry Developers LLC',
-    author_email='hello@angrydev.ru',
+    maintainer='Anton Ostapenko',
+    maintainer_email='olsnod@gmail.com',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
     license='Apache License (2.0)',
@@ -47,7 +42,7 @@ setup(
         ]
     },
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
