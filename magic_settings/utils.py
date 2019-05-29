@@ -357,7 +357,7 @@ def _get_config_dict_from_yaml(path: str):
     """
     try:
         with open(path) as file:
-            result = yaml.load(file) or {}
+            result = yaml.load(file, Loader=yaml.SafeLoader) or {}
             _validate_yaml_dict(result)
     except (IOError, TypeError, ValueError) as e:
         logger.error(f'Cannot read YAML config: {e}')
