@@ -1,2 +1,0 @@
-PyYAML==5.1
-python-dotenv==0.10.2
