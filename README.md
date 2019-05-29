@@ -63,10 +63,10 @@ settings = MySettings(
 - ***use_env***: ```True``` - использовать переменные окружения среды. Дефолтное значение ```True```.
 
 ### Исключения
-***ValueError***: Если тип modules ___не___ ```list``` или ```NoneType```. Если тип элемента в ***modules*** ___не___ ```ModuleType```.
+***ValueError***: Если тип modules не ```list``` или ```NoneType```. Если тип элемента в ***modules*** не ```ModuleType```.
 
 Загрузка настроек
------
+-----------------
 Загрузку настроек можно инициировать в любом месте проекта.
 ```python
 from where_your_settings import settings
@@ -76,7 +76,7 @@ settings.init()
 При повторном вызове снова пройдет по конфигурационным файлам и обновит их.
 
 Приоритизация настроек
----
+----------------------
 В случае, если настройки пересекаются, приоритет будет следующий:
 _my_module_ -> _my_awesome_module_ -> _.env_ -> _settings.yaml_
 ```python
@@ -100,7 +100,8 @@ _setting.yaml_
 PSYDUCK: yaml
 ```
 
-***Примеры***:
+Примеры:
+--------
 ```python
 settings = MySettings(modules=[my_module])
 # PSYDUCK = 'one'
@@ -128,7 +129,7 @@ settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path
 ```
 
 Временное переопределение Property
----
+----------------------------------
 _my_module.py_
 ```python
 PIKACHU = 'Psyduck_is_not_fine'
@@ -196,7 +197,7 @@ settings.to_dict()
   
 
 Динамические настройки
----
+----------------------
 
 ### Объявление класса, реализующего работу с источником настроек
 На примере хранения настроек в словаре `source`:
