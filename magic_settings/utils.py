@@ -5,10 +5,14 @@ import os
 import types
 import warnings
 from json import dumps
-from typing import Any, Dict, List, Type, Callable, Union, Tuple
+from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
-import yaml
 from dotenv import load_dotenv
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +60,10 @@ class BaseSettings:
                 raise ValueError(f'{module} type is not ModuleType or NoneType')
 
         self.yaml_settings_path = yaml_settings_path
+
+        if self.yaml_settings_path and not yaml:
+            raise ValueError('To use yaml_settings_path you need install PyYaml library.'
+                             'Use magic-settings[yaml] to install it.')
 
         self.dotenv_path = dotenv_path
         self.override_env = override_env

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 
 def read(filename: str) -> str:
@@ -37,7 +38,14 @@ setup(
     license='Apache License (2.0)',
     python_requires='~=3.6',
     zip_safe=True,
-    install_requires=parse_requirements(),
+    install_requires=[
+        'python-dotenv~=0.10.2',
+    ],
+    extras_require={
+        'yaml': [
+            'PyYAML~=5.1'
+        ]
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

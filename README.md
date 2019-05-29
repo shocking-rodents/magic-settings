@@ -1,5 +1,17 @@
 # Magic-settings
 
+## Установка
+
+```bash
+$ pip install magic-settings
+```
+
+Для использования настроек из `yaml` файла
+
+```bash
+$ pip install magic-settings[yaml]
+```
+
 ## Инициализация
 
 ### Объявление класса настроек проекта
