@@ -344,24 +344,25 @@ settings = MySettings(
     ```
     
 - ***dotenv_path***: Path to env-file. Default - ```None```. Using for exporting variables from env-file to environment. If ```dotenv_path``` is ```None``` -  walking up the directory tree looking for the specified file - called ```.env``` by default.
-- ***override_env***: ```True``` - override existing system environment variables, которые при загрузке из ```.env``` встречаются с такими же именами в окружении, ```False``` - не перезаписывать. Default - ```False```. 
-- ***yaml_settings_path***: Путь до конфигурационного yaml файла. Дефолтное значение ```None```.
-- ***use_env***: ```True``` - использовать переменные окружения среды. Дефолтное значение ```True```.
+- ***override_env***: ```True``` - override existing system environment variables, ```False``` - do not override. Default - ```False```. 
+- ***yaml_settings_path***: Path to yaml config file. Default - ```None```.
+- ***use_env***: ```True``` - use environment variables. Default - ```True```.
 
-### Исключения
-***ValueError***: Если тип modules не ```list``` или ```NoneType```. Если тип элемента в ***modules*** не ```ModuleType```.
+### Exceptions
+***ValueError***: If ***modules*** type is not ```list``` or ```NoneType``` and if type of element in ***modules*** is not ```ModuleType```.
 
-Загрузка настроек
+Settings loading
 -----------------
-Загрузку настроек можно инициировать в любом месте проекта.
+
+Loading settings can be initiated anywhere in the project.
 ```python
 from where_your_settings import settings
 
 settings.init()
 ```
-При повторном вызове снова пройдет по конфигурационным файлам и обновит их.
+If called again, it goes through the configuration files and update properties.
 
-Приоритизация настроек
+Settings priority
 ----------------------
 В случае, если настройки пересекаются, приоритет будет следующий:
 _my_module_ -> _my_awesome_module_ -> _.env_ -> _settings.yaml_
