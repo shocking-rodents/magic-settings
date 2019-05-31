@@ -224,7 +224,7 @@ settings.to_dict()
 
 It is recommended to use following `BaseSettings` class methods during redefinition `update_settings_from_source` method:
 
-1. `pre_validate` - check for the presence of types in `Property`, check for compliance with the type `Property` in possible values ​​of `Property.choices`, check for default values ​​for type matching.
+1. `pre_validate` - check for presence of types in `Property`, check for compliance with the type `Property` in possible values ​​of `Property.choices`, check for default values ​​for type matching.
 2. `post_validate` - check if each `Property` is assigned a value.
   
 ## Dynamic settings
