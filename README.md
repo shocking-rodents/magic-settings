@@ -81,7 +81,7 @@ settings = MySettings(
     ```
 
 - ***dotenv_path***: Path to env-file. Default - ```None```. Using for exporting variables from env-file to environment. If ```dotenv_path``` is ```None``` -  walking up the directory tree looking for the specified file - called ```.env``` by default.
-- ***override_env***: ```True``` - override existing system environment variables, ```False``` - do not override. Default - ```False```.
+- ***override_env***: ```True``` - override existing system environment variables with variables from `.env` - file, ```False``` - do not override. Default - ```False```.
 - ***yaml_settings_path***: Path to yaml config file. Default - ```None```.
 - ***use_env***: ```True``` - use environment variables. Default - ```True```.
 
