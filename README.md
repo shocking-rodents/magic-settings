@@ -55,31 +55,30 @@ settings = MySettings(
 - ***modules***: List of Python modules with variables to import. Default ```None```. 
 - ***prefix***: The prefix with which the environment variables are taken. Default - ```None```.
 
-#### settings.py
-
-```python
-class MySettings(BaseSettings):
-    PSYDUCK = Property(types=str)
-```
-#### .env 
-
-```dotenv
-MYPROJECT_PSYDUCK=Owowowow
-```
-
-#### some_other_place.py
-
-```python
-settings = MySettings(prefix='MYPROJECT')
-```
-
-or
-
-#### some_other_place.py
-
-```python
-settings = MySettings(prefix='MYPROJECT_')
-```
+    _settings.py_
+    
+    ```python
+    class MySettings(BaseSettings):
+        PSYDUCK = Property(types=str)
+    ```
+    
+    _.env_
+    
+    ```dotenv
+    MYPROJECT_PSYDUCK=Owowowow
+    ```
+    
+    _some_other_place.py_
+    
+    ```python
+    settings = MySettings(prefix='MYPROJECT')
+    ```
+    
+    or
+    
+    ```python
+    settings = MySettings(prefix='MYPROJECT_')
+    ```
     
 - ***dotenv_path***: Path to env-file. Default - ```None```. Using for exporting variables from env-file to environment. If ```dotenv_path``` is ```None``` -  walking up the directory tree looking for the specified file - called ```.env``` by default.
 - ***override_env***: ```True``` - override existing system environment variables, ```False``` - do not override. Default - ```False```. 
@@ -112,25 +111,25 @@ class MySettings(BaseSettings):
     PSYDUCK = Property(types=str)
 ```
 
-#### my_module.py
+_my_module.py_
 
 ```python
 PSYDUCK = 'one'
 ```
 
-#### my_awesome_module.py
+_my_awesome_module.py_
 
 ```python
 PSYDUCK = 'two'
 ```
 
-#### .env
+_.env_
 
 ```dotenv
 MYPROJECTPREFIX_PSYDUCK=env
 ```
 
-#### setting.yaml
+_setting.yaml_
 
 ```yaml
 PSYDUCK: yaml
@@ -170,11 +169,12 @@ settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path
 
 ## Temporary Property override
 
-#### my_module.py 
+_my_module.py_
 
 ```python
 PIKACHU = 'Psyduck_is_not_fine'
 PSYDUCK = 'Owowowow'
+
 ```
 
 ```python
@@ -237,7 +237,7 @@ It is recommended to use following `BaseSettings` class methods during redefinit
 
 1. `pre_validate` - check for presence of types in `Property`, check for compliance with the type `Property` in possible values ​​of `Property.choices`, check for default values ​​for type matching.
 2. `post_validate` - check if each `Property` is assigned a value.
-  
+
 ## Dynamic settings
 
 ### Definition of class working with settings source
