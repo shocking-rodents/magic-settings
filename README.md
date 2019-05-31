@@ -52,36 +52,36 @@ settings = MySettings(
 
 ### Parameters
 
-- ***modules***: List of Python modules with variables to import. Default ```None```. 
+- ***modules***: List of Python modules with variables to import. Default ```None```.
 - ***prefix***: The prefix with which the environment variables are taken. Default - ```None```.
 
     _settings.py_
-    
+
     ```python
     class MySettings(BaseSettings):
         PSYDUCK = Property(types=str)
     ```
-    
+
     _.env_
-    
+
     ```dotenv
     MYPROJECT_PSYDUCK=Owowowow
     ```
-    
+
     _some_other_place.py_
-    
+
     ```python
     settings = MySettings(prefix='MYPROJECT')
     ```
-    
+
     or
-    
+
     ```python
     settings = MySettings(prefix='MYPROJECT_')
     ```
-    
+
 - ***dotenv_path***: Path to env-file. Default - ```None```. Using for exporting variables from env-file to environment. If ```dotenv_path``` is ```None``` -  walking up the directory tree looking for the specified file - called ```.env``` by default.
-- ***override_env***: ```True``` - override existing system environment variables, ```False``` - do not override. Default - ```False```. 
+- ***override_env***: ```True``` - override existing system environment variables, ```False``` - do not override. Default - ```False```.
 - ***yaml_settings_path***: Path to yaml config file. Default - ```None```.
 - ***use_env***: ```True``` - use environment variables. Default - ```True```.
 
@@ -211,7 +211,7 @@ from magic_settings import BaseSettings, Property
 class MySettings(BaseSettings):
     PSYDUCK = Property(types=str)
     PIKACHU = Property(types=str)
-    
+
 settings = MySettings(dotenv_path='12345.env')
 settings.PIKACHU = '3'
 settings.PSYDUCK = '12345'
@@ -279,25 +279,25 @@ dynamic_settings = MyDynamicSettings(loop=loop, update_period=5, task_retries_nu
 
 ### Dynamic settings update
 
-#### The only settings update 
+#### The only settings update
 
 ```python
 await dynamic_settings.update_settings_from_source()
 ```
 
-#### Running infinity settings update loop:
+#### Running infinity settings update loop
 
 ```python
 await dynamic_settings.start_update()
 ```
 
-#### Stop infinity settings update loop:
+#### Stop infinity settings update loop
 
 ```python
 await dynamic_settings.stop_update()
 ```
 
-### Writing settings into the source:
+### Writing settings into the source
 
 ```python
 await dynamic_settings.update_config(JIGGLYPUFF='magenta')
