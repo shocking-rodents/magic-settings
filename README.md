@@ -138,33 +138,39 @@ PSYDUCK: yaml
 ## Examples
 
 ```python
-settings = MySettings(modules=[my_module])
-# PSYDUCK = 'one'
+>>> settings = MySettings(modules=[my_module])
+>>> settings.PSYDUCK
+'one'
 ```
 
 ```python
-settings = MySettings(modules=[my_module, my_awesome_module])
-# PSYDUCK = 'two'
+>>> settings = MySettings(modules=[my_module, my_awesome_module])
+>>> settings.PSYDUCK
+'two'
 ```
 
 ```python
-settings = MySettings(modules=[my_awesome_module, my_module])
-# PSYDUCK = 'one'
+>>> settings = MySettings(modules=[my_awesome_module, my_module])
+>>> settings.PSYDUCK
+'one'
 ```
 
 ```python
-settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv')
-# PSYDUCK = 'env'
+>>> settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv')
+>>> settings.PSYDUCK
+'env'
 ```
 
 ```python
-settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', use_env=False)
-# PSYDUCK = 'two'
+>>> settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', use_env=False)
+>>> settings.PSYDUCK
+'two'
 ```
 
 ```python
-settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', yaml_settings_path='/path/to/yaml/settings.yaml')
-# PSYDUCK = 'yaml'
+>>> settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', yaml_settings_path='/path/to/yaml/settings.yaml')
+>>> settings.PSYDUCK
+'yaml'
 ```
 
 ## Temporary Property override
@@ -189,15 +195,11 @@ settings = MySettings(modules=[my_module])
 settings.init()
 
 with settings.temp_set_attributes(PSYDUCK='I_am_ok', PIKACHU='Psyduck_is_ok'):
-    print(settings.PSYDUCK)
-    print(settings.PIKACHU)
-    # PSYDUCK='I_am_ok'
-    # PIKACHU='Psyduck_is_ok'
-
-print(settings.PSYDUCK)
-print(settings.PIKACHU)
-# PSYDUCK = 'Owowowow'
-# PIKACHU = 'Psyduck_is_not_fine'
+    print(settings.PSYDUCK) # 'I_am_ok'
+    print(settings.PIKACHU) # 'Psyduck_is_ok'
+    
+print(settings.PSYDUCK) # 'Owowowow'
+print(settings.PIKACHU) # 'Psyduck_is_not_fine'
 ```
 
 Method ```temp_set_attributes``` is not thread-safe.
@@ -208,6 +210,7 @@ You can use methods `to_dict()`, `to_json()` to get current settings:
 
 ```python
 from magic_settings import BaseSettings, Property
+
 class MySettings(BaseSettings):
     PSYDUCK = Property(types=str)
     PIKACHU = Property(types=str)
@@ -215,27 +218,29 @@ class MySettings(BaseSettings):
 settings = MySettings(dotenv_path='12345.env')
 settings.PIKACHU = '3'
 settings.PSYDUCK = '12345'
-settings.to_dict()
-# {
-#     'properties': {
-#         'PIKACHU': '3',
-#         'PSYDUCK': '12345'
-#     },
-#     'sources': [{
-#         'source_type': 'dotenv',
-#         'address': {
-#             'dotenv_path': '12345.env',
-#             'override': False
-#         }
-#     }]
-# }
+
+pprint(settings.to_dict())
+
+{
+    'properties': {
+        'PIKACHU': '3',
+        'PSYDUCK': '12345'
+    },
+    'sources': [{
+        'source_type': 'dotenv',
+        'address': {
+            'dotenv_path': '12345.env',
+            'override': False
+        }
+    }]
+}
 ```
 
 ## Validation
 
 It is recommended to use following `BaseSettings` class methods during redefinition `update_settings_from_source` method:
 
-1. `pre_validate` - check for presence of types in `Property`, check for compliance with the type `Property` in possible values ​​of `Property.choices`, check for default values ​​for type matching.
+1. `pre_validate` - check that types are configured correctly; check that the values from `choices` and the default pass the type check.
 2. `post_validate` - check if each `Property` is assigned a value.
 
 ## Dynamic settings
