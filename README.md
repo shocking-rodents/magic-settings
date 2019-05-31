@@ -55,24 +55,31 @@ settings = MySettings(
 - ***modules***: List of Python modules with variables to import. Default ```None```. 
 - ***prefix***: The prefix with which the environment variables are taken. Default - ```None```.
 
-    _settings.py_
-    ```python
-    class MySettings(BaseSettings):
-        PSYDUCK = Property(types=str)
-    ```
-    _.env_
-    ```dotenv
-    MYPROJECT_PSYDUCK=Owowowow
-    ```
-    _some_other_place.py_
-    ```python
-    settings = MySettings(prefix='MYPROJECT')
-    ```
-    or\
-    _some_other_place.py_
-    ```python
-    settings = MySettings(prefix='MYPROJECT_')
-    ```
+#### settings.py
+
+```python
+class MySettings(BaseSettings):
+    PSYDUCK = Property(types=str)
+```
+#### .env 
+
+```dotenv
+MYPROJECT_PSYDUCK=Owowowow
+```
+
+#### some_other_place.py
+
+```python
+settings = MySettings(prefix='MYPROJECT')
+```
+
+or
+
+#### some_other_place.py
+
+```python
+settings = MySettings(prefix='MYPROJECT_')
+```
     
 - ***dotenv_path***: Path to env-file. Default - ```None```. Using for exporting variables from env-file to environment. If ```dotenv_path``` is ```None``` -  walking up the directory tree looking for the specified file - called ```.env``` by default.
 - ***override_env***: ```True``` - override existing system environment variables, ```False``` - do not override. Default - ```False```. 
@@ -105,22 +112,26 @@ class MySettings(BaseSettings):
     PSYDUCK = Property(types=str)
 ```
 
-_my_module.py_
+#### my_module.py
+
 ```python
 PSYDUCK = 'one'
 ```
 
-_my_awesome_module.py_
+#### my_awesome_module.py
+
 ```python
 PSYDUCK = 'two'
 ```
 
-_.env_
+#### .env
+
 ```dotenv
 MYPROJECTPREFIX_PSYDUCK=env
 ```
 
-_setting.yaml_
+#### setting.yaml
+
 ```yaml
 PSYDUCK: yaml
 ```
@@ -159,11 +170,11 @@ settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path
 
 ## Temporary Property override
 
-_my_module.py_
+#### my_module.py 
+
 ```python
 PIKACHU = 'Psyduck_is_not_fine'
 PSYDUCK = 'Owowowow'
-
 ```
 
 ```python
