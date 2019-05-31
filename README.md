@@ -1,20 +1,21 @@
 # Magic-settings
 
-## Установка
+## Installation
 
 ```bash
-$ pip install magic-settings
+pip install magic-settings
 ```
 
-Для использования настроек из `yaml` файла
+Using settings from `yaml` file
 
 ```bash
-$ pip install magic-settings[yaml]
+pip install magic-settings[yaml]
 ```
 
-## Инициализация
+## Initialization
 
-### Объявление класса настроек проекта
+### Project settings class declaration
+
 ```python
 from magic_settings import BaseSettings, Property
 
@@ -22,15 +23,18 @@ class MySettings(BaseSettings):
     VERSION = Property(types=str)
     PROJECT_DIR = Property(types=str)
 ```
-Класс ```Property``` является дескриптором и содержит следующие параметры:
-- ***types*** - Список типов или тип ```значения```. Выбрасывает ```ValueError```, если ```значение``` не является ни одним типом из ```types```.
-- ***validators*** - Список из ```callable``` объектов, каждый из которых последовательно применяется к ```значению```.  Выбрасывает ```ValueError```, если ```значение``` не проходит хотя бы одну из валидаций.
-- ***choices*** - Список из любых объектов. Если ```значение``` не содержится в ```choices``` - выбрасывает ```ValueError```. При использовании данного параметра игнорируются параметры ```types``` и ```validators```.
-- ***default*** - Устанавливает дефолтное значение аттрибута класса ```Property```.
-- ***converts*** - Список из ```callable``` объектов. Представляет из себя цепочку преобразований, которые последовательно применяются к ```значению``` и каждый раз перезаписывают его. Применяется к ```значению``` только если оно является строкой. Выбрасывает ```ValueError```, если ```значение``` не проходит хотя бы одно из преобразований.
 
-### Конфигурация настроек
-Конфигурация настроек происходит на этапе создания объекта внутри конструктора
+Class ```Property``` is a descriptor with following parameters:
+
+- ***types*** - Type of ```value``` or a tuple of possible ```types```. It is a ```ValueError``` if ```value``` is not one of the ```types```.
+- ***validators*** - List of ```callable``` objects each of which is successively applied to ```value```.  Raises ```ValueError``` if ```value``` does not pass at least one of the validations.
+- ***choices*** - List of any objects. If ```value``` is not in ```choices``` - raises ```ValueError```. When using this parameter, parameters  ```types``` and ```validators``` are ignored.
+- ***default*** - Sets the default value of ```Property```.
+- ***converts*** - List of ```callable``` objects. It is a chain of transformations that are successively applied to the ```value``` and overwrite it each time. It applies to ```value``` only if ```value``` is a string. Raises ```ValueError``` if ```value``` at least one of the transformations failed to apply.
+
+### Settings configuration
+
+Settings configuration occurs at the stage of creating a Settings object.
 
 ```python
 from my_project import my_module, my_awesome_module
@@ -46,108 +50,139 @@ settings = MySettings(
 )
 ```
 
-### Параметры
-- ***modules***: Список импортируемых python файлов с переменными. Дефолтное значение ```None```. 
-- ***prefix***: Префикс, с которым берутся переменные окружения. Дефолтное значение ```None```.
+### Parameters
+
+- ***modules***: List of Python modules with variables to import. Default ```None```.
+- ***prefix***: The prefix with which the environment variables are taken. Default - ```None```.
 
     _settings.py_
+
     ```python
     class MySettings(BaseSettings):
         PSYDUCK = Property(types=str)
     ```
+
     _.env_
+
     ```dotenv
     MYPROJECT_PSYDUCK=Owowowow
     ```
+
     _some_other_place.py_
+
     ```python
     settings = MySettings(prefix='MYPROJECT')
     ```
-    or\
-    _some_other_place.py_
+
+    or
+
     ```python
     settings = MySettings(prefix='MYPROJECT_')
     ```
-    
-- ***dotenv_path***: Путь до env-файла. Дефолтное значение ```None```. Используется для загрузки переменных из env-файла в окружение. Если dotenv_path ```None``` -  то пойдет по дереву каталогов вверх, ища указанный файл - по умолчанию имя файла для поиска - ```.env```.
-- ***override_env***: ```True``` - перезаписать значения, которые при загрузке из ```.env``` встречаются с такими же именами в окружении, ```False``` - не перезаписывать. Дефолтное значение - ```False```. 
-- ***yaml_settings_path***: Путь до конфигурационного yaml файла. Дефолтное значение ```None```.
-- ***use_env***: ```True``` - использовать переменные окружения среды. Дефолтное значение ```True```.
 
-### Исключения
-***ValueError***: Если тип modules не ```list``` или ```NoneType```. Если тип элемента в ***modules*** не ```ModuleType```.
+- ***dotenv_path***: Path to env-file. Default - ```None```. Using for exporting variables from env-file to environment. If ```dotenv_path``` is ```None``` -  walking up the directory tree looking for the specified file - called ```.env``` by default.
+- ***override_env***: ```True``` - override existing system environment variables with variables from `.env` - file, ```False``` - do not override. Default - ```False```.
+- ***yaml_settings_path***: Path to yaml config file. Default - ```None```.
+- ***use_env***: ```True``` - use environment variables. Default - ```True```.
 
-Загрузка настроек
------------------
-Загрузку настроек можно инициировать в любом месте проекта.
+### Exceptions
+
+***ValueError***: If ***modules*** type is not ```list``` or ```NoneType``` and if type of element in ***modules*** is not ```ModuleType```.
+
+## Settings loading
+
+Loading settings can be initiated anywhere in the project.
+
 ```python
 from where_your_settings import settings
 
 settings.init()
 ```
-При повторном вызове снова пройдет по конфигурационным файлам и обновит их.
 
-Приоритизация настроек
-----------------------
-В случае, если настройки пересекаются, приоритет будет следующий:
+If called again, it goes through the configuration files and update properties.
+
+## Settings priority
+
+In case of intersection of settings the following priority will be applied:
 _my_module_ -> _my_awesome_module_ -> _.env_ -> _settings.yaml_
+
 ```python
 class MySettings(BaseSettings):
     PSYDUCK = Property(types=str)
 ```
+
 _my_module.py_
+
 ```python
 PSYDUCK = 'one'
 ```
+
 _my_awesome_module.py_
+
 ```python
 PSYDUCK = 'two'
 ```
+
 _.env_
+
 ```dotenv
 MYPROJECTPREFIX_PSYDUCK=env
 ```
+
 _setting.yaml_
+
 ```yaml
 PSYDUCK: yaml
 ```
 
-Примеры:
---------
+## Examples
+
 ```python
-settings = MySettings(modules=[my_module])
-# PSYDUCK = 'one'
-```
-```python
-settings = MySettings(modules=[my_module, my_awesome_module])
-# PSYDUCK = 'two'
+>>> settings = MySettings(modules=[my_module])
+>>> settings.PSYDUCK
+'one'
 ```
 
 ```python
-settings = MySettings(modules=[my_awesome_module, my_module])
-# PSYDUCK = 'one'
-```
-```python
-settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv')
-# PSYDUCK = 'env'
-```
-```python
-settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', use_env=False)
-# PSYDUCK = 'two'
-```
-```python
-settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', yaml_settings_path='/path/to/yaml/settings.yaml')
-# PSYDUCK = 'yaml'
+>>> settings = MySettings(modules=[my_module, my_awesome_module])
+>>> settings.PSYDUCK
+'two'
 ```
 
-Временное переопределение Property
-----------------------------------
+```python
+>>> settings = MySettings(modules=[my_awesome_module, my_module])
+>>> settings.PSYDUCK
+'one'
+```
+
+```python
+>>> settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv')
+>>> settings.PSYDUCK
+'env'
+```
+
+```python
+>>> settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', use_env=False)
+>>> settings.PSYDUCK
+'two'
+```
+
+```python
+>>> settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', yaml_settings_path='/path/to/yaml/settings.yaml')
+>>> settings.PSYDUCK
+'yaml'
+```
+
+## Temporary Property override
+
 _my_module.py_
+
 ```python
 PIKACHU = 'Psyduck_is_not_fine'
 PSYDUCK = 'Owowowow'
 
 ```
+
 ```python
 from my_project import my_module
 from my_config import MySettings
@@ -160,59 +195,59 @@ settings = MySettings(modules=[my_module])
 settings.init()
 
 with settings.temp_set_attributes(PSYDUCK='I_am_ok', PIKACHU='Psyduck_is_ok'):
-    print(settings.PSYDUCK)
-    print(settings.PIKACHU)
-    # PSYDUCK='I_am_ok'
-    # PIKACHU='Psyduck_is_ok'
-
-print(settings.PSYDUCK)
-print(settings.PIKACHU)
-# PSYDUCK = 'Owowowow'
-# PIKACHU = 'Psyduck_is_not_fine'
+    print(settings.PSYDUCK) # 'I_am_ok'
+    print(settings.PIKACHU) # 'Psyduck_is_ok'
+print(settings.PSYDUCK) # 'Owowowow'
+print(settings.PIKACHU) # 'Psyduck_is_not_fine'
 ```
 
-Метод ```temp_set_attributes``` не является потокобезопасным.
+Method ```temp_set_attributes``` is not thread-safe.
 
-## Список настроек
-Для получения списка настроек можно использовать методы `to_dict()`, `to_json`:
+## Settings list
+
+You can use methods `to_dict()`, `to_json()` to get current settings:
+
 ```python
 from magic_settings import BaseSettings, Property
+
 class MySettings(BaseSettings):
     PSYDUCK = Property(types=str)
     PIKACHU = Property(types=str)
-    
+
 settings = MySettings(dotenv_path='12345.env')
 settings.PIKACHU = '3'
 settings.PSYDUCK = '12345'
-settings.to_dict()
-# {
-#     'properties': {
-#         'PIKACHU': '3',
-#         'PSYDUCK': '12345'
-#     },
-#     'sources': [{
-#         'source_type': 'dotenv',
-#         'address': {
-#             'dotenv_path': '12345.env',
-#             'override': False
-#         }
-#     }]
-# }
+
+pprint(settings.to_dict())
+
+{
+    'properties': {
+        'PIKACHU': '3',
+        'PSYDUCK': '12345'
+    },
+    'sources': [{
+        'source_type': 'dotenv',
+        'address': {
+            'dotenv_path': '12345.env',
+            'override': False
+        }
+    }]
+}
 ```
 
-## Валидация
-При переопределении метода `update_settings_from_source` рекомендуется использовать следующие методы класса `BaseSettings`:
+## Validation
 
-1. `pre_validate` — проверка наличия типов в `Property`, проверка соответствия типу `Property` в возможных значениях `Property.choices`, проверка значения по умолчанию на соответствии типу.
+It is recommended to use following `BaseSettings` class methods during redefinition `update_settings_from_source` method:
 
-2. `post_validate` — проверка на то, что каждому `Property` присвоено какое-либо значение
-  
+1. `pre_validate` - check that types are configured correctly; check that the values from `choices` and the default pass the type check.
+2. `post_validate` - check if each `Property` is assigned a value.
 
-Динамические настройки
-----------------------
+## Dynamic settings
 
-### Объявление класса, реализующего работу с источником настроек
-На примере хранения настроек в словаре `source`:
+### Implementing a custom dynamic settings source
+
+Example with storing settings in dict `source`:
+
 ```python
 from magic_settings import BaseDynamicSettings, Property
 
@@ -229,43 +264,49 @@ class BaseDynamicSettingsDict(BaseDynamicSettings):
         return super().update_config(**kwargs)
 ```
 
-### Объявление класса динамических настроек проекта
+### Definition of project`s dynamic settings class
 
 ```python
 class MyDynamicSettings(BaseDynamicSettingsDict):
     JIGGLYPUFF = Property(types=str)
 ```
 
-### Инициализация экземпляра динамических настроек
+### Dynamic Settings Initialization
+
 ```python
 loop = asyncio.get_event_loop()
 dynamic_settings = MyDynamicSettings(loop=loop, update_period=5, task_retries_number=5)
 ```
-- ***update_period***: период обновления настроек из источника в секундах
-- ***task_retries_number***: количество попыток обновить настройки при возникновении исключения перед остановкой задания
 
-### Обновление динамических настроек
+- ***update_period***: time between updating settings from source, in seconds.
+- ***task_retries_number***: the number of attempts to update the settings when an exception occurred before stopping the task.
 
-#### Обновление настроек один раз  
+### Dynamic settings update
+
+#### Updating settings only once
+
 ```python
 await dynamic_settings.update_settings_from_source()
 ```
 
-#### Запуск бесконечного обновления:
+#### Starting the update loop
 
 ```python
 await dynamic_settings.start_update()
 ```
 
-#### Остановка бесконечного обновления:
+#### Stopping the update loop
+
 ```python
 await dynamic_settings.stop_update()
 ```
 
-### Запись настроек в источник
+### Writing settings into the source
+
 ```python
 await dynamic_settings.update_config(JIGGLYPUFF='magenta')
 ```
 
-### Исключения
-- ***magic_settings.DynamicSettingsSourceError*** - это исключение следует выбрасывать при недоступности источника настроек в классе, унаследованном от `BaseDynamicSettings`
+### Exceptions
+
+- ***magic_settings.DynamicSettingsSourceError*** - this exception should be selected if the settings source in the class inherited from `BaseDynamicSettings` is unavailable.
