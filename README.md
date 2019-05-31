@@ -197,7 +197,6 @@ settings.init()
 with settings.temp_set_attributes(PSYDUCK='I_am_ok', PIKACHU='Psyduck_is_ok'):
     print(settings.PSYDUCK) # 'I_am_ok'
     print(settings.PIKACHU) # 'Psyduck_is_ok'
-    
 print(settings.PSYDUCK) # 'Owowowow'
 print(settings.PIKACHU) # 'Psyduck_is_not_fine'
 ```
