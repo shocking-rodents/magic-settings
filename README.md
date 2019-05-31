@@ -229,7 +229,8 @@ It is recommended to use following `BaseSettings` class methods during redefinit
   
 ## Dynamic settings
 
-### Definition of class working with settings source:
+### Definition of class working with settings source
+
 
 Example with storing settings in dict `source`:
 
