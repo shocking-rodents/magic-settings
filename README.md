@@ -23,11 +23,11 @@ class MySettings(BaseSettings):
     PROJECT_DIR = Property(types=str)
 ```
 Class ```Property``` is a descriptor with following parameters:
-- ***types*** - Type list or type of ```value```. Raises ```ValueError``` if ```value``` is not one of the ```types```.
-- ***validators*** - List of ```callable``` objects each of which is consistently applied to ```value```.  Raises ```ValueError``` if ```value``` does not pass at least one of the validations.
-- ***choices*** - List of any objects. If ```value``` not contained in ```choices``` - raises ```ValueError```. When using this parameter, parameters  ```types``` and ```validators``` are ignored.
+- ***types*** - Type of ```value``` or a tuple of possible ```types```. It is a ```ValueError``` if ```value``` is not one of the ```types```.
+- ***validators*** - List of ```callable``` objects each of which is successively applied to ```value```.  Raises ```ValueError``` if ```value``` does not pass at least one of the validations.
+- ***choices*** - List of any objects. If ```value``` is not in ```choices``` - raises ```ValueError```. When using this parameter, parameters  ```types``` and ```validators``` are ignored.
 - ***default*** - Sets the default value of the class attribute ```Property```.
-- ***converts*** - List of ```callable``` objects. It is a chain of transformations that are consistently applied to the ```value``` and overwrite it each time. It applies to ```value``` only if ```value``` is a string. Raises ```ValueError``` if ```value``` at least one of the transformations failed to apply.
+- ***converts*** - List of ```callable``` objects. It is a chain of transformations that are successively applied to the ```value``` and overwrite it each time. It applies to ```value``` only if ```value``` is a string. Raises ```ValueError``` if ```value``` at least one of the transformations failed to apply.
 
 ### Settings configuration
 Settings configuration occur at the stage of creating an object inside the constructor.
