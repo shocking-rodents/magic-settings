@@ -267,7 +267,7 @@ class MyDynamicSettings(BaseDynamicSettingsDict):
     JIGGLYPUFF = Property(types=str)
 ```
 
-### Initialization of dynamic settings class instance
+### Dynamic Settings Initialization
 
 ```python
 loop = asyncio.get_event_loop()
