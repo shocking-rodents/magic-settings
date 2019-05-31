@@ -204,7 +204,7 @@ Method ```temp_set_attributes``` is not thread-safe.
 
 ## Settings list
 
-You can use methods `to_dict()`, `to_json()` to get list of settings:
+You can use methods `to_dict()`, `to_json()` to get current settings:
 
 ```python
 from magic_settings import BaseSettings, Property
@@ -240,7 +240,7 @@ It is recommended to use following `BaseSettings` class methods during redefinit
 
 ## Dynamic settings
 
-### Definition of class working with settings source
+### Implementing a custom dynamic settings source
 
 Example with storing settings in dict `source`:
 
@@ -274,24 +274,24 @@ loop = asyncio.get_event_loop()
 dynamic_settings = MyDynamicSettings(loop=loop, update_period=5, task_retries_number=5)
 ```
 
-- ***update_period***: settings`s update period from source in seconds.
+- ***update_period***: time between updating settings from source, in seconds.
 - ***task_retries_number***: the number of attempts to update the settings when an exception occurred before stopping the task.
 
 ### Dynamic settings update
 
-#### The only settings update
+#### Updating settings only once
 
 ```python
 await dynamic_settings.update_settings_from_source()
 ```
 
-#### Running infinity settings update loop
+#### Starting the update loop
 
 ```python
 await dynamic_settings.start_update()
 ```
 
-#### Stop infinity settings update loop
+#### Stopping the update loop
 
 ```python
 await dynamic_settings.stop_update()
