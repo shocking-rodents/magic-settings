@@ -231,7 +231,6 @@ It is recommended to use following `BaseSettings` class methods during redefinit
 
 ### Definition of class working with settings source
 
-
 Example with storing settings in dict `source`:
 
 ```python
