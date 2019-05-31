@@ -3,13 +3,13 @@
 ## Installation
 
 ```bash
-$ pip install magic-settings
+pip install magic-settings
 ```
 
 Using settings from `yaml` file
 
 ```bash
-$ pip install magic-settings[yaml]
+pip install magic-settings[yaml]
 ```
 
 ## Initialization
@@ -73,6 +73,7 @@ settings = MySettings(
     ```python
     settings = MySettings(prefix='MYPROJECT_')
     ```
+    
 - ***dotenv_path***: Path to env-file. Default - ```None```. Using for exporting variables from env-file to environment. If ```dotenv_path``` is ```None``` -  walking up the directory tree looking for the specified file - called ```.env``` by default.
 - ***override_env***: ```True``` - override existing system environment variables, ```False``` - do not override. Default - ```False```. 
 - ***yaml_settings_path***: Path to yaml config file. Default - ```None```.
@@ -98,22 +99,27 @@ If called again, it goes through the configuration files and update properties.
 
 In case of intersection of settings the following priority will be applied:
 _my_module_ -> _my_awesome_module_ -> _.env_ -> _settings.yaml_
+
 ```python
 class MySettings(BaseSettings):
     PSYDUCK = Property(types=str)
 ```
+
 _my_module.py_
 ```python
 PSYDUCK = 'one'
 ```
+
 _my_awesome_module.py_
 ```python
 PSYDUCK = 'two'
 ```
+
 _.env_
 ```dotenv
 MYPROJECTPREFIX_PSYDUCK=env
 ```
+
 _setting.yaml_
 ```yaml
 PSYDUCK: yaml
@@ -125,6 +131,7 @@ PSYDUCK: yaml
 settings = MySettings(modules=[my_module])
 # PSYDUCK = 'one'
 ```
+
 ```python
 settings = MySettings(modules=[my_module, my_awesome_module])
 # PSYDUCK = 'two'
@@ -134,14 +141,17 @@ settings = MySettings(modules=[my_module, my_awesome_module])
 settings = MySettings(modules=[my_awesome_module, my_module])
 # PSYDUCK = 'one'
 ```
+
 ```python
 settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv')
 # PSYDUCK = 'env'
 ```
+
 ```python
 settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', use_env=False)
 # PSYDUCK = 'two'
 ```
+
 ```python
 settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path/to/dotenv', yaml_settings_path='/path/to/yaml/settings.yaml')
 # PSYDUCK = 'yaml'
@@ -149,13 +159,13 @@ settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path
 
 ## Temporary Property override
 
-### my_module.py
-
+_my_module.py_
 ```python
 PIKACHU = 'Psyduck_is_not_fine'
 PSYDUCK = 'Owowowow'
 
 ```
+
 ```python
 from my_project import my_module
 from my_config import MySettings
@@ -184,6 +194,7 @@ Method ```temp_set_attributes``` is not thread-safe.
 ## Settings list
 
 You can use methods `to_dict()`, `to_json()` to get list of settings:
+
 ```python
 from magic_settings import BaseSettings, Property
 class MySettings(BaseSettings):
@@ -219,7 +230,9 @@ It is recommended to use following `BaseSettings` class methods during redefinit
 ## Dynamic settings
 
 ### Definition of class working with settings source:
+
 Example with storing settings in dict `source`:
+
 ```python
 from magic_settings import BaseDynamicSettings, Property
 
@@ -237,22 +250,26 @@ class BaseDynamicSettingsDict(BaseDynamicSettings):
 ```
 
 ### Definition of project`s dynamic settings class
+
 ```python
 class MyDynamicSettings(BaseDynamicSettingsDict):
     JIGGLYPUFF = Property(types=str)
 ```
 
 ### Initialization of dynamic settings class instance
+
 ```python
 loop = asyncio.get_event_loop()
 dynamic_settings = MyDynamicSettings(loop=loop, update_period=5, task_retries_number=5)
 ```
+
 - ***update_period***: settings`s update period from source in seconds.
 - ***task_retries_number***: the number of attempts to update the settings when an exception occurred before stopping the task.
 
 ### Dynamic settings update
 
 #### The only settings update 
+
 ```python
 await dynamic_settings.update_settings_from_source()
 ```
@@ -264,14 +281,17 @@ await dynamic_settings.start_update()
 ```
 
 #### Stop infinity settings update loop:
+
 ```python
 await dynamic_settings.stop_update()
 ```
 
 ### Writing settings into the source:
+
 ```python
 await dynamic_settings.update_config(JIGGLYPUFF='magenta')
 ```
 
 ### Exceptions
+
 - ***magic_settings.DynamicSettingsSourceError*** - this exception should be selected if the settings source in the class inherited from `BaseDynamicSettings` is unavailable.
