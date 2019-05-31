@@ -47,7 +47,7 @@ settings = MySettings(
 ```
 
 ### Parameters
-- ***modules***: List of python files to import with variables. Default - ```None```. 
+- ***modules***: List of Python modules with variables to import. Default ```None```. 
 - ***prefix***: The prefix with which the environment variables are taken. Default - ```None```.
 
     _settings.py_
