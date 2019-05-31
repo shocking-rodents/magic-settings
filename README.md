@@ -268,7 +268,6 @@ await dynamic_settings.update_config(JIGGLYPUFF='magenta')
 ```
 
 ### Исключения
-
 - ***magic_settings.DynamicSettingsSourceError*** - это исключение следует выбрасывать при недоступности источника настроек в классе, унаследованном от `BaseDynamicSettings`
 
 
