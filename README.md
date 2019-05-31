@@ -30,7 +30,7 @@ Class ```Property``` is a descriptor with following parameters:
 - ***converts*** - List of ```callable``` objects. It is a chain of transformations that are successively applied to the ```value``` and overwrite it each time. It applies to ```value``` only if ```value``` is a string. Raises ```ValueError``` if ```value``` at least one of the transformations failed to apply.
 
 ### Settings configuration
-Settings configuration occur at the stage of creating a Settings object.
+Settings configuration occurs at the stage of creating a Settings object.
 
 ```python
 from my_project import my_module, my_awesome_module
