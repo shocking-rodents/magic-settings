@@ -174,7 +174,7 @@ print(settings.PIKACHU)
 Method ```temp_set_attributes``` is not thread-safe.
 
 ## Settings list
-You can use methods `to_dict()`, `to_json` to get list of settings:
+You can use methods `to_dict()`, `to_json()` to get list of settings:
 ```python
 from magic_settings import BaseSettings, Property
 class MySettings(BaseSettings):
