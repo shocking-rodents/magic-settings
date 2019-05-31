@@ -270,7 +270,6 @@ await dynamic_settings.update_config(JIGGLYPUFF='magenta')
 ### Исключения
 - ***magic_settings.DynamicSettingsSourceError*** - это исключение следует выбрасывать при недоступности источника настроек в классе, унаследованном от `BaseDynamicSettings`
 
-----------------
 
 # Magic-settings
 
@@ -352,8 +351,7 @@ settings = MySettings(
 ***ValueError***: If ***modules*** type is not ```list``` or ```NoneType``` and if type of element in ***modules*** is not ```ModuleType```.
 
 Settings loading
------------------
-
+----------------
 Loading settings can be initiated anywhere in the project.
 ```python
 from where_your_settings import settings
@@ -363,8 +361,8 @@ settings.init()
 If called again, it goes through the configuration files and update properties.
 
 Settings priority
-----------------------
-В случае, если настройки пересекаются, приоритет будет следующий:
+-----------------
+In case of intersection of settings the following priority will be applied:
 _my_module_ -> _my_awesome_module_ -> _.env_ -> _settings.yaml_
 ```python
 class MySettings(BaseSettings):
@@ -387,7 +385,7 @@ _setting.yaml_
 PSYDUCK: yaml
 ```
 
-Примеры:
+Examples:
 --------
 ```python
 settings = MySettings(modules=[my_module])
@@ -415,7 +413,7 @@ settings = MySettings(modules=[my_module, my_awesome_module], dotenv_path='/path
 # PSYDUCK = 'yaml'
 ```
 
-Временное переопределение Property
+Temporary Property redefinition
 ----------------------------------
 _my_module.py_
 ```python
@@ -446,10 +444,10 @@ print(settings.PIKACHU)
 # PIKACHU = 'Psyduck_is_not_fine'
 ```
 
-Метод ```temp_set_attributes``` не является потокобезопасным.
+Method ```temp_set_attributes``` is not thread-safe.
 
-## Список настроек
-Для получения списка настроек можно использовать методы `to_dict()`, `to_json`:
+## Settings list
+You can use methods `to_dict()`, `to_json` to get list of settings:
 ```python
 from magic_settings import BaseSettings, Property
 class MySettings(BaseSettings):
@@ -475,19 +473,18 @@ settings.to_dict()
 # }
 ```
 
-## Валидация
-При переопределении метода `update_settings_from_source` рекомендуется использовать следующие методы класса `BaseSettings`:
-
-1. `pre_validate` — проверка наличия типов в `Property`, проверка соответствия типу `Property` в возможных значениях `Property.choices`, проверка значения по умолчанию на соответствии типу.
-
-2. `post_validate` — проверка на то, что каждому `Property` присвоено какое-либо значение
+## Validation
+It is recommended to use following `BaseSettings` class methods during redefinition `update_settings_from_source` method:
+    
+1. `pre_validate` - check for the presence of types in` Property`, check for compliance with the type `Property` in possible values ​​of` Property.choices`, check for default values ​​for type matching.
+2. `post_validate` - check if each `Property` is assigned a value.
   
 
-Динамические настройки
-----------------------
+Dynamic settings
+----------------
 
-### Объявление класса, реализующего работу с источником настроек
-На примере хранения настроек в словаре `source`:
+### Definition of class working with settings source:
+Example with storing settings in dict `source`:
 ```python
 from magic_settings import BaseDynamicSettings, Property
 
@@ -504,43 +501,42 @@ class BaseDynamicSettingsDict(BaseDynamicSettings):
         return super().update_config(**kwargs)
 ```
 
-### Объявление класса динамических настроек проекта
-
+### Definition of project`s dynamic settings class
 ```python
 class MyDynamicSettings(BaseDynamicSettingsDict):
     JIGGLYPUFF = Property(types=str)
 ```
 
-### Инициализация экземпляра динамических настроек
+### Initialization of dynamic settings class instance
 ```python
 loop = asyncio.get_event_loop()
 dynamic_settings = MyDynamicSettings(loop=loop, update_period=5, task_retries_number=5)
 ```
-- ***update_period***: период обновления настроек из источника в секундах
-- ***task_retries_number***: количество попыток обновить настройки при возникновении исключения перед остановкой задания
+- ***update_period***: settings`s update period from source in seconds.
+- ***task_retries_number***: the number of attempts to update the settings when an exception occurred before stopping the task.
 
-### Обновление динамических настроек
+### Dynamic settings update
 
-#### Обновление настроек один раз  
+#### The only settings update 
 ```python
 await dynamic_settings.update_settings_from_source()
 ```
 
-#### Запуск бесконечного обновления:
+#### Running infinity settings update loop:
 
 ```python
 await dynamic_settings.start_update()
 ```
 
-#### Остановка бесконечного обновления:
+#### Stop infinity settings update loop:
 ```python
 await dynamic_settings.stop_update()
 ```
 
-### Запись настроек в источник
+### Writing settings into the source:
 ```python
 await dynamic_settings.update_config(JIGGLYPUFF='magenta')
 ```
 
-### Исключения
-- ***magic_settings.DynamicSettingsSourceError*** - это исключение следует выбрасывать при недоступности источника настроек в классе, унаследованном от `BaseDynamicSettings`
+### Exceptions
+- ***magic_settings.DynamicSettingsSourceError*** - this exception should be selected if the settings source in the class inherited from `BaseDynamicSettings` is unavailable.
