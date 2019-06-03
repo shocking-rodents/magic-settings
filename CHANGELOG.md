@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.0.1
+-----
+
+- Library documentation is translated into English
+
 1.0.0
 -----
 
