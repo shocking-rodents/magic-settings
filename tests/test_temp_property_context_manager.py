@@ -26,7 +26,7 @@ def test_temp_property(settings):
 
 def test_temp_bad_property(settings):
     """Test context manager raises AttributeError if kwargs have nonexistent attribute name"""
-    with pytest.raises(AttributeError, message='AttributeError'):
+    with pytest.raises(AttributeError, match=r'does`t have such attribute'):
         with settings.temp_set_attributes(FOO='TEMP_FOO', BAR='TEMP_BAR', BAD_ATTR='BAD_ATTR'):
             pass
 

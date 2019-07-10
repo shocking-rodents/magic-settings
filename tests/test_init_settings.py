@@ -39,7 +39,7 @@ def test_init_settings(modules, prefix, dotenv_path, override_env, yaml_settings
 
 def test_init_with_bad_module():
     """Test init with bad parameters"""
-    with pytest.raises(ValueError, message='Expecting ValueError'):
+    with pytest.raises(ValueError, match=r'not_module type is not ModuleType or NoneType'):
         TestSettings(modules=[base, local, 'not_module'])
 
 
