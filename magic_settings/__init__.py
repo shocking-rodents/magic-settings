@@ -15,6 +15,8 @@ from .utils import (
     TransformsComplexProperty,
 )
 
+from .special_property import BoolProperty, FloatProperty, IntProperty, StringListProperty, StringProperty
+
 from .dynamic_settings_base import BaseDynamicSettings, DynamicSettingsSourceError
 
 __version__ = '1.0.1'
@@ -22,5 +24,6 @@ __version__ = '1.0.1'
 __all__ = [
     'NoneType', 'Undefined', 'BaseSettings', 'BaseProperty',
     'ComplexProperty', 'TransformsMixin', 'Property', 'TransformsProperty',
-    'TransformsComplexProperty', 'BaseDynamicSettings', 'DynamicSettingsSourceError'
+    'TransformsComplexProperty', 'BaseDynamicSettings', 'DynamicSettingsSourceError',
+    'BoolProperty', 'FloatProperty', 'IntProperty', 'StringListProperty', 'StringProperty'
 ]

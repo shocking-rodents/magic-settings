@@ -18,19 +18,41 @@ pip install magic-settings[yaml]
 
 ```python
 from magic_settings import BaseSettings, Property
+from functools import partial
 
 class MySettings(BaseSettings):
     VERSION = Property(types=str)
     PROJECT_DIR = Property(types=str)
+    LOGGING_LEVEL = Property(default='INFO', choices=['NOTSET', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
+    RETRIES_NUMBER = Property(types=int, converts=[int])
+    COEFFICIENT = Property(types=float, converts=[float])
+    DEBUG = Property(types=bool, converts=[int, bool], default=False)
+    DISTRIBUTED_SERVICE_HOSTS = Property(types=list, converts=[partial(str.split, sep=',')])
 ```
 
 Class ```Property``` is a descriptor with following parameters:
 
 - ***types*** - Type of ```value``` or a tuple of possible ```types```. It is a ```ValueError``` if ```value``` is not one of the ```types```.
-- ***validators*** - List of ```callable``` objects each of which is successively applied to ```value```.  Raises ```ValueError``` if ```value``` does not pass at least one of the validations.
+- ***validators*** - List of ```callable``` objects each of which is successively applied to ```value```.  Raises ```ValueError``` if ```value``` does not pass at least one of the validations (if any validation function returns ```False```).
 - ***choices*** - List of any objects. If ```value``` is not in ```choices``` - raises ```ValueError```. When using this parameter, parameters  ```types``` and ```validators``` are ignored.
 - ***default*** - Sets the default value of ```Property```.
 - ***converts*** - List of ```callable``` objects. It is a chain of transformations that are successively applied to the ```value``` and overwrite it each time. It applies to ```value``` only if ```value``` is a string. Raises ```ValueError``` if ```value``` at least one of the transformations failed to apply.
+
+For most used properties it is existed following class of properties: ```StringProperty```, ```IntProperty```, ```FloatProperty```, ```BoolProperty```, ```StringListProperty```. Above example may use these special properties:
+
+```python
+from magic_settings import (BaseSettings, Property,
+                            BoolProperty, FloatProperty, IntProperty, StringListProperty, StringProperty)
+
+class MySettings(BaseSettings):
+    VERSION = StringProperty()
+    PROJECT_DIR = StringProperty()
+    LOGGING_LEVEL = Property(default='INFO', choices=['NOTSET', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
+    RETRIES_NUMBER = IntProperty()
+    COEFFICIENT = FloatProperty()
+    DEBUG = BoolProperty(default=False)
+    DISTRIBUTED_SERVICE_HOSTS = StringListProperty()
+```
 
 ### Settings configuration
 
