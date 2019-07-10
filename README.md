@@ -27,7 +27,7 @@ class MySettings(BaseSettings):
     RETRIES_NUMBER = Property(types=int, converts=[int])
     COEFFICIENT = Property(types=float, converts=[float])
     DEBUG = Property(types=bool, converts=[int, bool], default=False)
-    DISTRIBUTED_SERVICE_HOSTS = Property(types=list, converts=[partial(str.split, sep=',')])
+    DISTRIBUTED_SERVICE_HOST_NAMES = Property(types=list, converts=[partial(str.split, sep=',')])
 ```
 
 Class ```Property``` is a descriptor with following parameters:
@@ -62,7 +62,7 @@ class MySettings(BaseSettings):
     RETRIES_NUMBER = IntProperty()
     COEFFICIENT = FloatProperty()
     DEBUG = BoolProperty(default=False)
-    DISTRIBUTED_SERVICE_HOSTS = StringListProperty()
+    DISTRIBUTED_SERVICE_HOST_NAMES = StringListProperty()
 ``` 
 
 ### Settings configuration
