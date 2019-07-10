@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.1.0
+-----
+
+- Add common properties
+- Updated requirements-dev.txt
+- Updated .pre-commit-config.yaml
+
 1.0.1
 -----
 
