@@ -38,7 +38,18 @@ Class ```Property``` is a descriptor with following parameters:
 - ***default*** - Sets the default value of ```Property```.
 - ***converts*** - List of ```callable``` objects. It is a chain of transformations that are successively applied to the ```value``` and overwrite it each time. It applies to ```value``` only if ```value``` is a string. Raises ```ValueError``` if ```value``` at least one of the transformations failed to apply.
 
-For most used properties it is existed following class of properties: ```StringProperty```, ```IntProperty```, ```FloatProperty```, ```BoolProperty```, ```StringListProperty```. Above example may use these special properties:
+### Property classes
+
+Besides ```Property``` following classes may be used for standard types:
+
+- ```BoolProperty```: it is used for boolean values, converts case-insensitive ```true``` or ```false``` to appropriate python boolean value. Also this property accepts numbers (```0``` is False, ```1``` is True).
+- ```FloatProperty```: it is used for float number values.
+- ```IntProperty```: it is used for integer number values.
+- ```StringProperty```: it is used for string values.
+- ```StringListProperty```: it used for list of strings. You can specify delimiter in constructor of this class (```,``` is default value).
+- ```HostListProperty```: it is used for get list of hosts. One host is a list containing hostname with type ```string``` and port with type ```int```. Hosts should be divided by comma, hostname and port should be divided by colon. Example: ```192.168.20.1:80,www.yandex.ru:1234,localhost:8888```
+
+Above example may be simplified using these properties:
 
 ```python
 from magic_settings import (BaseSettings, Property,
@@ -52,7 +63,7 @@ class MySettings(BaseSettings):
     COEFFICIENT = FloatProperty()
     DEBUG = BoolProperty(default=False)
     DISTRIBUTED_SERVICE_HOSTS = StringListProperty()
-```
+``` 
 
 ### Settings configuration
 
