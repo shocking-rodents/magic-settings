@@ -20,12 +20,12 @@ class FloatProperty(Property):
 
 
 class BoolProperty(Property):
-    """
-    Returns 0 if value equals 'false', returns 1 if value equals 'true' (case-insensitive).
-    In other values, just returns init value
-    """
     @staticmethod
     def convert_bool_value_by_string(value: str):
+        """
+        Returns 0 if value equals 'false', returns 1 if value equals 'true' (case-insensitive).
+        In other values, just returns init value
+        """
         if value.lower() == 'false':
             return 0
         if value.lower() == 'true':
