@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.1.1
+-----
+
+* Fix empty inputs in list properties 
+
 1.1.0
 -----
 
