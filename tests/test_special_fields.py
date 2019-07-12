@@ -59,9 +59,9 @@ def test_property_params():
     (StringListProperty, 'test string ,more test', ['test string ', 'more test']),
     (StringListProperty, '1,2,', ['1', '2']),
     (HostListProperty, '', []),
-    (HostListProperty, 'localhost:8080,', [['localhost', 8080]]),
+    (HostListProperty, 'localhost:8080,', [('localhost', 8080)]),
     (HostListProperty, '192.168.20.1:80,www.yandex.ru:1234,localhost:8888',
-     [['192.168.20.1', 80], ['www.yandex.ru', 1234], ['localhost', 8888]]),
+     [('192.168.20.1', 80), ('www.yandex.ru', 1234), ('localhost', 8888)]),
 ])
 def test_custom_property_values(property_class, env_value, python_value):
     os.environ['PROPERTY'] = env_value

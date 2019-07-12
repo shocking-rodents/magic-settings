@@ -49,7 +49,7 @@ class HostListProperty(Property):
     @staticmethod
     def split_hosts(hosts):
         """Parse comma-separated host-port pairs. """
-        return [[host.split(':')[0], int(host.split(':')[1])] for host in hosts.split(',') if host != '']
+        return [(host.split(':')[0], int(host.split(':')[1])) for host in hosts.split(',') if host != '']
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs, types=list, converts=[self.split_hosts])

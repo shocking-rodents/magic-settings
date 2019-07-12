@@ -47,7 +47,7 @@ Besides ```Property``` following classes may be used for standard types:
 - ```IntProperty```: accepts integer number values.
 - ```StringProperty```: accepts string values.
 - ```StringListProperty```: accepts list of strings. You can specify delimiter in constructor of this class (```,``` is default value).
-- ```HostListProperty```: accepts list of hosts. One host is a list containing hostname with type ```string``` and port with type ```int```. Hosts should be divided by comma, hostname and port should be divided by colon. For example, ```192.168.20.1:80,www.yandex.ru:1234,localhost:8888``` will be converted into ```[['192.168.20.1', 80], ['www.yandex.ru', 1234], ['localhost', 8888]]```.
+- ```HostListProperty```: accepts list of hosts. Each host is a tuple containing a ```string``` hostname and an ```int``` port. Pairs should be divided by comma, hostname and port should be divided by colon. For example, ```192.168.20.1:80,www.yandex.ru:1234,localhost:8888``` will be converted into ```[('192.168.20.1', 80), ('www.yandex.ru', 1234), ('localhost', 8888)]```.
 
 Above example may be simplified using these properties:
 
