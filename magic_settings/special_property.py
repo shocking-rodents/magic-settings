@@ -37,15 +37,19 @@ class BoolProperty(Property):
 
 
 class StringListProperty(Property):
+    @staticmethod
+    def split_list(raw, delimiter):
+        return list(filter(None, raw.split(sep=delimiter)))
+
     def __init__(self, delimiter=',', **kwargs):
-        super().__init__(**kwargs, types=list, converts=[partial(str.split, sep=delimiter)])
+        super().__init__(**kwargs, types=list, converts=[partial(self.split_list, delimiter=delimiter)])
 
 
 class HostListProperty(Property):
     @staticmethod
     def split_hosts(hosts):
         """Parse comma-separated host-port pairs. """
-        return [[host.split(':')[0], int(host.split(':')[1])] for host in hosts.split(',')]
+        return [[host.split(':')[0], int(host.split(':')[1])] for host in hosts.split(',') if host != '']
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs, types=list, converts=[self.split_hosts])
