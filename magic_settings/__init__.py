@@ -26,7 +26,7 @@ from .special_property import (
 
 from .dynamic_settings_base import BaseDynamicSettings, DynamicSettingsSourceError
 
-__version__ = '1.1.1'
+__version__ = '1.2.0'
 
 __all__ = [
     'NoneType', 'Undefined', 'BaseSettings', 'BaseProperty',
