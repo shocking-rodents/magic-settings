@@ -33,7 +33,7 @@ setup(
     python_requires='~=3.6',
     zip_safe=True,
     install_requires=[
-        'python-dotenv~=0.10.2',
+        'python-dotenv>=0.10.2,<0.15.0',
     ],
     extras_require={
         'yaml': [
